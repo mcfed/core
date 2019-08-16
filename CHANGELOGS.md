@@ -17,6 +17,7 @@
 
 - 修改table size 为 small [@guor]
 - 增加umd发布方式 [@zhouhuan]
+- 增加huksy commitline 等配置 [@zhouhuan]
 
 # 1.3.0
 
