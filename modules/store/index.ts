@@ -92,8 +92,8 @@ export default class Store {
   private injectModel(orm: any, model: any) {
     //@ts-ignore
     Object.values(model)
-      .filter(m => typeof m === 'function')
-      .map(m => orm.register(m));
+      .filter((m: any) => typeof m === 'function')
+      .map((m: any) => orm.register(m));
     function defaultUpdater(session: any, action: any) {
       session.sessionBoundModels.forEach(function(modelClass: any) {
         /* istanbul ignore else */
