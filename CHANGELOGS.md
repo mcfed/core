@@ -13,13 +13,7 @@
 ## Master
 
 <!-- Your comment below this -->
-# 1.3.1
 
-- 修改table size 为 small [@guor]
-- 增加umd发布方式 [@zhouhuan]
-- 增加huksy commitline 等配置 [@zhouhuan]
+# 0.1.0
 
-# 1.3.0
-
-- 重新修改打包机制，master 上使用自动化发布 [@zhouhuan]
-- 取消umd发布包，改用cjs和es方式 [@zhouhuan]
+- typescript 重构 Store [@zhouhuan]

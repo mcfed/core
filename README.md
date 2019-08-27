@@ -1,10 +1,10 @@
-[![pipeline status](http://git.mchz.com.cn/mcf/crud/badges/master/pipeline.svg)](http://git.mchz.com.cn/mcf/crud/commits/master)
-[![coverage report](http://git.mchz.com.cn/mcf/crud/badges/master/coverage.svg)](http://git.mchz.com.cn/mcf/crud/commits/master)
+[![pipeline status](http://git.mchz.com.cn/mcf/core/badges/master/pipeline.svg)](http://git.mchz.com.cn/mcf/core/commits/master)
+[![coverage report](http://git.mchz.com.cn/mcf/core/badges/master/coverage.svg)](http://git.mchz.com.cn/mcf/core/commits/master)
 
-# crud
+# core
 
-[![pipeline status](http://git.mchz.com.cn/mcf/crud/badges/master/pipeline.svg)](http://git.mchz.com.cn/mcf/crud/commits/master)
-[![coverage report](http://git.mchz.com.cn/mcf/crud/badges/master/coverage.svg)](http://git.mchz.com.cn/mcf/crud/commits/master)
+[![pipeline status](http://git.mchz.com.cn/mcf/core/badges/master/pipeline.svg)](http://git.mchz.com.cn/mcf/core/commits/master)
+[![coverage report](http://git.mchz.com.cn/mcf/core/badges/master/coverage.svg)](http://git.mchz.com.cn/mcf/core/commits/master)
 
 > 使用方式请查看各有组件 readme.md 文件
 
@@ -14,7 +14,7 @@
 - 添加.npmrc 文件
   `registry=http://192.168.200.178:4873/`
 - 运行命令安装包
-  `npm install mcf-crud`
+  `npm install mcf-core`
 
 ## develop 规范要求
 
