@@ -6,6 +6,7 @@ import {
   Middleware
 } from 'redux';
 import createSagaMiddleware from 'redux-saga';
+import {suppressWarnings} from 'core-decorators';
 
 //@ts-ignore
 import {ModuleMiddleware, ModuleRouter, ModuleModel} from 'mcf-module';
@@ -28,7 +29,7 @@ interface ModuleShape {
 
 export default class Store {
   // private history : any = null
-  private registerModule: Array<string> = [];
+  private registed: Array<string> = [];
   private asyncReducers: Array<Function> = [];
   private sagaMiddleware = null;
 
@@ -43,11 +44,12 @@ export default class Store {
   }
 
   private createStoreWithMiddleware(middlewares: any, history: any) {
-    return applyMiddleware.apply(this, this.initialMiddleware(middlewares))(
-      createStore
-    );
+    return applyMiddleware.apply(
+      this,
+      this.initialMiddleware(history, middlewares)
+    )(createStore);
   }
-  private initialMiddleware(middlweares: any) {
+  private initialMiddleware(history: any, middlweares: any) {
     return [
       (store: any) => {
         //@ts-ignore
@@ -93,7 +95,13 @@ export default class Store {
     //@ts-ignore
     Object.values(model)
       .filter((m: any) => typeof m === 'function')
-      .map((m: any) => orm.register(m));
+      .map((m: any) => {
+        /* istanbul ignore else */
+        if (orm.registry.indexOf(m) < 0) {
+          //必免重复注册
+          orm.register(m);
+        }
+      });
     function defaultUpdater(session: any, action: any) {
       session.sessionBoundModels.forEach(function(modelClass: any) {
         /* istanbul ignore else */
@@ -121,8 +129,8 @@ export default class Store {
     //@ts-ignore
     let moduleName = loaded.model.default.modelName;
     /* istanbul ignore else */
-    if (this.registerModule.indexOf(moduleName) < 0) {
-      this.registerModule = this.registerModule.concat([moduleName]);
+    if (this.registed.indexOf(moduleName) < 0) {
+      this.registed = this.registed.concat([moduleName]);
       this.injectReducer(moduleName, loaded.reducer);
       //@ts-ignore
       this.store.dispatch({
@@ -134,32 +142,17 @@ export default class Store {
     }
     return loaded.default;
   }
-  /*
-  public registerModule(modulePath:any) {
-    return Loadable({
-      loader: () => modulePath,
-      loading: () => <div className='app-loading'>模块加载中....</div>,
-      timeout: 10000,
-      render(loaded, props) {
-        let Component = loaded.default;
-        let moduleName = loaded.model.default.modelName;
-        if (store.registerModule.indexOf(moduleName) < 0) {
-          injectModel(orm, loaded.model);
-          injectSaga(loaded.saga);
-          injectReducer(store, {key: moduleName, reducer: loaded.reducer});
-          store.dispatch({
-            type: '@@ModuleMiddleware/register',
-            payload: {name: moduleName}
-          });
-          store.registerModule = store.registerModule.concat([moduleName]);
-        }
-        return (
-          <ErrorBoundary>
-            <Component {...props} />
-          </ErrorBoundary>
-        );
-      }
+
+  @suppressWarnings
+  public registerModule(modulePath: any) {
+    return this.importModule(modulePath);
+  }
+
+  public importModule(modulePath: any) {
+    return new Promise((resolve: any, reject: any) => {
+      modulePath.then((module: ModuleShape) => {
+        resolve(this.loadModule(module));
+      });
     });
   }
-  */
 }

@@ -1,10 +1,8 @@
 import Store from '../index.ts';
 import {createHashHistory} from 'history';
-import * as UserModel from '../__module__';
 
 describe('Name of the group', () => {
   it('create instance', () => {
-    // Store.initialReducer()
     const store = new Store(createHashHistory());
     expect(store.getStore()).toHaveProperty('dispatch');
     expect(store.getStore()).toHaveProperty('getState');
@@ -13,9 +11,35 @@ describe('Name of the group', () => {
   });
   it('create store loadModule(user)', () => {
     const store = new Store(createHashHistory());
-    store.loadModule(UserModel);
-    expect(store.registerModule).toEqual(['user']);
-    store.loadModule(UserModel);
+    const module = require('../__module__');
+    store.loadModule(module);
+    expect(store.registed).toEqual(['user']);
+    expect(store.getStore().getState()).toHaveProperty('user');
+  });
+
+  it('create store Multiple executions loadModule(user)', () => {
+    const store = new Store(createHashHistory());
+    const module = require('../__module__');
+    store.loadModule(module);
+    store.loadModule(module);
+    store.loadModule(module);
+    expect(store.registed).toEqual(['user']);
+    expect(store.getStore().getState()).toHaveProperty('user');
+  });
+
+  it('create store importModule(user)', async () => {
+    const store = new Store(createHashHistory());
+    const module = require('../__module__');
+    const importModule = new Promise((resolve, rejects) => resolve(module));
+    expect(await store.importModule(importModule)).toEqual(module.default);
+    expect(store.getStore().getState()).toHaveProperty('user');
+  });
+
+  it('create store registerModule(user)', async () => {
+    const store = new Store(createHashHistory());
+    const module = require('../__module__');
+    const importModule = new Promise((resolve, rejects) => resolve(module));
+    expect(await store.registerModule(importModule)).toEqual(module.default);
     expect(store.getStore().getState()).toHaveProperty('user');
   });
 });

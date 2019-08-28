@@ -5,13 +5,13 @@ module.exports = {
   coverageThreshold: {
     //测试覆盖率, 阈值不满足，就返回测试失败
     global: {
-      branches: 15,
-      functions: 70,
-      lines: 70,
-      statements: 70
+      branches: 100,
+      functions: 90,
+      lines: 90,
+      statements: 90
     }
   },
-  notify: true,
+  notify: false,
   setupTestFrameworkScriptFile: '<rootDir>/setupTests.js',
   coveragePathIgnorePatterns: [
     //该路径下的测试，忽略在测试覆盖率上
@@ -28,6 +28,7 @@ module.exports = {
     '<rootDir>/dist',
     '<rootDir>/scripts/',
     '<rootDir>/api/',
+    '<rootDir>/modules/store/__module__',
     '<rootDir>/test/setup.js',
     '__mocks__'
   ],

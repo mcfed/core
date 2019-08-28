@@ -14,6 +14,11 @@
 
 <!-- Your comment below this -->
 
+# 0.2.0
+
+- feature: 增加 importModule 方法进行 import 注册[@zhouhuan]
+- bugfix: 修正 重复注册引起的提示报错 [@zhouhuan]
+
 # 0.1.0
 
 - typescript 重构 Store [@zhouhuan]

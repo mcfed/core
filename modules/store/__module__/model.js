@@ -19,18 +19,8 @@ Object.assign(user.fields, BaseModel.fields, {
   mobilePhone: attr(),
   email: attr(),
   roles: attr(),
-  role: attr({
-    fieldName: 'roles',
-    get: function(val) {
-      return val && val[0];
-    }
-  }),
+  role: attr(),
   createTime: attr(),
   status: attr(),
-  roleId: attr({
-    fieldName: 'roles',
-    get: function(val) {
-      return val && val.map(v => v.id)[0];
-    }
-  })
+  roleId: attr()
 });
