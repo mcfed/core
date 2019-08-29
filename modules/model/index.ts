@@ -7,6 +7,7 @@ import Attr, {attr} from './Attr.ts';
 import {
   reducerListPageSelector,
   reducerItemSelector
+  //@ts-ignore
 } from './reducerSelector.ts';
 
 //@ts-ignore
