@@ -1,8 +1,9 @@
 {
   "name": "@mcf/core",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "@mcf for core",
-  "main": "cjs/index.js",
+  "main": "umd/index.js",
+  "module": "cjs/index.js",
   "scripts": {
     "test": "jest",
     "dev": "rollup -c --watch",
@@ -11,9 +12,14 @@
   },
   "keywords": [
     "@mcf",
-    "CRUD",
-    "modules",
+    "core",
     "developer"
+  ],
+  "files": [
+    "cjs/",
+    "umd/",
+    "modules",
+    "package.json"
   ],
   "repository": {
     "type": "git",
