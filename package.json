@@ -1,6 +1,6 @@
 {
   "name": "@mcf/core",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "@mcf for core",
   "main": "umd/index.js",
   "module": "cjs/index.js",
@@ -47,6 +47,7 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
     "babel-preset-latest": "^6.24.1",
+    "history": "^4.10.1",
     "husky": "^2.3.0",
     "jest": "^22.4.3",
     "jsdoc": "3.5.5",
