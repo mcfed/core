@@ -12,7 +12,7 @@ const input = './modules/index.ts';
 const globals = {
   qs: 'qs',
   redux: 'redux',
-  'mcf-module': 'mcf-module'
+  'redux-orm': 'redux-orm'
 };
 
 const commonjsOptions = {
@@ -22,7 +22,7 @@ const commonjsOptions = {
 export default [
   {
     input,
-    output: {file: `cjs/${pkg.name}.js`, format: 'cjs'},
+    output: {file: `cjs/index.js`, format: 'cjs'},
     external: Object.keys(globals),
     plugins: [
       nodeResolve(),
@@ -34,7 +34,7 @@ export default [
   },
   {
     input,
-    output: {file: `umd/${pkg.name}.js`, format: 'umd', name},
+    output: {file: `umd/index.js`, format: 'umd', name},
     external: Object.keys(globals),
     plugins: [
       nodeResolve(),

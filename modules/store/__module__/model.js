@@ -1,6 +1,5 @@
-import {ModuleModel} from 'mcf-module';
+import {attr, BaseModel} from '../../model';
 
-const {attr, BaseModel} = ModuleModel;
 export const namespace = 'user';
 
 export default class user extends BaseModel {

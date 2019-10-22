@@ -1,4 +1,4 @@
-import Store from '../index.ts';
+import Store from '../';
 import {createHashHistory} from 'history';
 
 describe('Name of the group', () => {

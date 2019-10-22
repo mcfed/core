@@ -8,12 +8,17 @@ import {
 import createSagaMiddleware from 'redux-saga';
 import {suppressWarnings} from 'core-decorators';
 
-//@ts-ignore
-import {ModuleMiddleware, ModuleRouter, ModuleModel} from 'mcf-module';
+import {
+  fetchingMiddleware,
+  moduleMiddleware,
+  sagaMiddleware
+} from '../middleware';
+import {orm} from '../model';
+// //@ts-ignore
 
-const {connectRouter, routerMiddleware, push} = ModuleRouter;
-const {fetchingReducer, globalReducer, createSagaMonitor} = ModuleMiddleware;
-const {orm} = ModuleModel;
+const {fetchingReducer} = fetchingMiddleware;
+const globalReducer = moduleMiddleware.default;
+const createSagaMonitor = sagaMiddleware.default;
 
 interface ModuleShape {
   default: Object;
@@ -61,9 +66,9 @@ export default class Store {
         });
         //@ts-ignore
         return this.sagaMiddleware(store);
-      },
+      }
       // createLogger(),
-      routerMiddleware(history)
+      // routerMiddleware(history)
     ].concat(middlweares || []);
   }
 
@@ -71,7 +76,7 @@ export default class Store {
     return {
       appReducer: globalReducer,
       fetchingReducer,
-      router: connectRouter(history),
+      // router: connectRouter(history),
       ...reducers
     };
   }

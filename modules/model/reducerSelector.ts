@@ -1,6 +1,6 @@
 import {createSelector} from 'redux-orm';
 //@ts-ignore
-import {orm} from './index.ts';
+import {orm} from './';
 
 /**
  *   getItem by key
@@ -14,11 +14,16 @@ export function reducerItemSelector(
   key: string
 ) {
   //@ts-ignore
-  return createSelector((orm: any, session: any) => {
-    return session[modelName].idExists(key)
-      ? session[modelName].withId(key)
-      : session[modelName].create({});
-  })(reducer);
+
+  return createSelector(
+    orm,
+    //@ts-ignore
+    (session: any, props: any) => {
+      return session[modelName].idExists(key)
+        ? session[modelName].withId(key)
+        : session[modelName].create({});
+    }
+  )(reducer);
 }
 
 /**
@@ -29,14 +34,18 @@ export function reducerItemSelector(
 
 export function reducerListSelector(reducer: any, modelName: string) {
   //@ts-ignore
-  return createSelector((orm: any, session: any) => {
-    return session[modelName]
-      .all()
-      .filter(
-        (model: any) => !(JSON.stringify(model) === '{}' || model.id === '')
-      )
-      .toModelArray();
-  })(reducer);
+  return createSelector(
+    orm,
+    //@ts-ignore
+    (session: any, props: any) => {
+      return session[modelName]
+        .all()
+        .filter(
+          (model: any) => !(JSON.stringify(model) === '{}' || model.id === '')
+        )
+        .toModelArray();
+    }
+  )(reducer);
 }
 
 /**
@@ -47,9 +56,13 @@ export function reducerListSelector(reducer: any, modelName: string) {
 
 export function reducerModel(reducer: any, modelName: string) {
   //@ts-ignore
-  return createSelector((orm: any, session: any) => {
-    return session[modelName];
-  })(reducer);
+  return createSelector(
+    orm,
+    //@ts-ignore
+    (session: any, props: any) => {
+      return session[modelName];
+    }
+  )(reducer);
 }
 
 /**
@@ -63,9 +76,9 @@ export function reducerListPageSelector(
   modelName: any,
   props: any
 ) {
-  //@ts-ignore
   return createSelector(
     orm,
+    //@ts-ignore
     (session: any, props: any) => {
       return session[modelName].all().toModelArray();
     }
@@ -77,9 +90,9 @@ export function reducerListSelectorFilter(
   modelName: any,
   filterCallback: any
 ) {
-  //@ts-ignore
   return createSelector(
     orm,
+    //@ts-ignore
     (session: any, props: any) => {
       return session[modelName]
         .all()

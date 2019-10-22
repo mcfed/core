@@ -1,10 +1,9 @@
-import {injectIntl} from 'react-intl';
 import {sagaActions} from './saga';
 import {namespace} from './model';
-import {ModuleContainer, ModuleModel} from 'mcf-module';
+//import {ModuleContainer, ModuleModel} from 'mcf-module';
 
-const {connect, bindActionCreators, defaultMergeProps} = ModuleContainer;
-const {reducerItemSelector, reducerListSelector} = ModuleModel;
+//const {connect, bindActionCreators, defaultMergeProps} = ModuleContainer;
+//const {reducerItemSelector, reducerListSelector} = ModuleModel;
 
 // const mapStateToProps = (state, props) => {
 //   return {

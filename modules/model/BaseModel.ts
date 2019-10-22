@@ -1,8 +1,18 @@
 import {Model, ManyToMany, Session} from 'redux-orm';
 //@ts-ignore
-import {normalizeEntity} from 'redux-orm/lib/utils';
-//@ts-ignore
 import {attr} from './Attr.ts';
+
+function normalizeEntity(entity: any) {
+  if (
+    entity !== null &&
+    typeof entity !== 'undefined' &&
+    typeof entity.getId === 'function'
+  ) {
+    return entity.getId();
+  }
+
+  return entity;
+}
 
 export default class BaseModel extends Model {
   private _fields: AttributeOpts = {};

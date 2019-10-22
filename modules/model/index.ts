@@ -1,14 +1,7 @@
 import {ORM, createSelector} from 'redux-orm';
-//@ts-ignore
-import BaseModel from './BaseModel.ts';
-//@ts-ignore
-import Attr, {attr} from './Attr.ts';
-//@ts-ignore
-import {
-  reducerListPageSelector,
-  reducerItemSelector
-  //@ts-ignore
-} from './reducerSelector.ts';
+import BaseModel from './BaseModel';
+import Attr, {attr} from './Attr';
+import {reducerListPageSelector, reducerItemSelector} from './reducerSelector';
 
 //@ts-ignore
 class ModelORM extends ORM {

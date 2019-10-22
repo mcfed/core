@@ -1,2 +1,4 @@
 import Store from './store';
-export {Store};
+import * as Model from './model';
+import * as middleware from './middleware';
+export {Store, Model, middleware};
