@@ -36,8 +36,10 @@ export default class Attr extends Attribute {
         //@ts-ignore
         return getMethod
           ? //@ts-ignore
+            //@ts-ignore
             getMethod.call(this, this._fields[mapperFieldName], this._fields)
           : //@ts-ignore
+            //@ts-ignore
             this._fields[mapperFieldName];
       },
       set(value: any) {
