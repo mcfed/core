@@ -1,6 +1,6 @@
 {
   "name": "@mcf/core",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "@mcf for core",
   "main": "umd/index.js",
   "module": "cjs/index.js",
@@ -42,7 +42,6 @@
     "@commitlint/config-conventional": "^8.1.0",
     "@types/history": "^4.7.3",
     "@types/jest": "^24.0.15",
-    "@types/redux": "^3.6.0",
     "@types/redux-orm": "^0.13.5",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^23.6.0",

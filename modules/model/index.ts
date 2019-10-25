@@ -1,11 +1,12 @@
-import {ORM, createSelector} from 'redux-orm';
+import {ORM, createSelector, ORMOpts, OrmState} from 'redux-orm';
 import BaseModel from './BaseModel';
 import Attr, {attr} from './Attr';
 import {reducerListPageSelector, reducerItemSelector} from './reducerSelector';
+import {IndexedModelClasses} from 'redux-orm/ORM';
 
 //@ts-ignore
 class ModelORM extends ORM {
-  constructor(props: any) {
+  constructor(props: ORMOpts) {
     super(props);
     //@ts-ignore
     const emptyDBState = this.getEmptyState();
@@ -25,6 +26,7 @@ const orm = new ModelORM();
 
 export {
   orm,
+  ModelORM,
   BaseModel,
   Attr,
   attr,

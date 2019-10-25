@@ -40,12 +40,3 @@ export function query(type: Function | string) {
     }
   );
 }
-
-// export function dicts(type,value){
-//   if (arguments.length > 1) {
-//     return DictUtils.getDictLabel(state.appReducer.dicts, type, value);
-//   } else if (arguments.length == 1) {
-//     return DictUtils.getDictList(state.appReducer.dicts, type);
-//   }
-//   return '';
-// }

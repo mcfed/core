@@ -2,10 +2,13 @@ import {
   createStore,
   applyMiddleware,
   combineReducers,
-  StoreCreator,
-  Middleware
+  Middleware,
+  Reducer,
+  ReducersMapObject,
+  AnyAction,
+  Store
 } from 'redux';
-import createSagaMiddleware from 'redux-saga';
+import createSagaMiddleware, {SagaMiddleware, Saga} from 'redux-saga';
 import {suppressWarnings} from 'core-decorators';
 
 import {
@@ -14,7 +17,15 @@ import {
   sagaMiddleware
 } from '../middleware';
 import {orm} from '../model';
-// //@ts-ignore
+import Model, {
+  ORM,
+  Session,
+  TableState,
+  OrmState,
+  SessionBoundModel
+} from 'redux-orm';
+import {IndexedModelClasses} from 'redux-orm/ORM';
+import {Location} from 'history';
 
 const {fetchingReducer} = fetchingMiddleware;
 const globalReducer = moduleMiddleware.default;
@@ -22,9 +33,9 @@ const createSagaMonitor = sagaMiddleware.default;
 
 interface ModuleShape {
   default: Object;
-  model?: Object;
-  reducer: Function;
-  saga: Object;
+  model: Model;
+  reducer: Reducer;
+  saga: Saga;
 }
 
 /**
@@ -32,82 +43,92 @@ interface ModuleShape {
  *  store.getStore()
  */
 
-export default class Store {
+export default class StoreManager<
+  I extends IndexedModelClasses<any>,
+  ModelNames extends keyof I = keyof I
+> {
   // private history : any = null
   private registed: Array<string> = [];
-  private asyncReducers: Array<Function> = [];
-  private sagaMiddleware = null;
+  private asyncReducers: ReducersMapObject<IndexedModelClasses, AnyAction> = [];
+  private sagaMiddleware!: SagaMiddleware;
 
-  protected store: StoreCreator;
+  protected store: Store;
 
-  constructor(history: any, reducers: any, middlewares: any) {
+  constructor(
+    history: Location,
+    reducers: Array<Reducer>,
+    middlewares: Array<Middleware>
+  ) {
     this.asyncReducers = this.initialReducer(reducers, history);
-    //@ts-ignore
     this.store = this.createStoreWithMiddleware(middlewares, history)(
       this.makeRootReducer(this.asyncReducers)
     );
   }
 
-  private createStoreWithMiddleware(middlewares: any, history: any) {
+  private createStoreWithMiddleware(
+    middlewares: Array<Middleware>,
+    history: Location
+  ) {
     return applyMiddleware.apply(
       this,
       this.initialMiddleware(history, middlewares)
     )(createStore);
   }
-  private initialMiddleware(history: any, middlweares: any) {
+  private initialMiddleware(
+    history: Location,
+    middlweares: Array<Middleware>
+  ): Array<Middleware> {
     return [
       (store: any) => {
-        //@ts-ignore
         this.sagaMiddleware = createSagaMiddleware({
           sagaMonitor: createSagaMonitor({
             rootReducer: this.asyncReducers,
             storeDispatch: store.dispatch
           })
         });
-        //@ts-ignore
         return this.sagaMiddleware(store);
       }
-      // createLogger(),
-      // routerMiddleware(history)
     ].concat(middlweares || []);
   }
 
-  private initialReducer(reducers: any, history: any) {
+  private initialReducer(reducers: Array<Reducer>, history: Location) {
     return {
       appReducer: globalReducer,
       fetchingReducer,
-      // router: connectRouter(history),
       ...reducers
     };
   }
-  private makeRootReducer(asyncReducers: any) {
+  private makeRootReducer<IndexedModelClasses>(
+    asyncReducers: ReducersMapObject<IndexedModelClasses, any>
+  ) {
     return combineReducers(asyncReducers);
   }
-  private injectSaga(saga: any) {
-    //@ts-ignore
-    // this.sagaMiddleware.run(saga)
+  private injectSaga(saga: Saga): void {
+    this.sagaMiddleware.run(saga);
   }
-  private injectReducer(key: String, reducer: Function) {
+  private injectReducer(key: String, reducer: Reducer): void {
     //@ts-ignore
     this.asyncReducers[key] = reducer;
-    //@ts-ignore
     this.store.replaceReducer(this.makeRootReducer(this.asyncReducers));
-    //@ts-ignore
     this.store.dispatch({type: '@@redux/REPLACE'});
   }
 
-  private injectModel(orm: any, model: any) {
+  private injectModel(orm: ORM<IndexedModelClasses>, model: Model): void {
     //@ts-ignore
     Object.values(model)
-      .filter((m: any) => typeof m === 'function')
-      .map((m: any) => {
+      .filter((m: SessionBoundModel) => typeof m === 'function')
+      .map((m: SessionBoundModel) => {
         /* istanbul ignore else */
+        //@ts-ignore
         if (orm.registry.indexOf(m) < 0) {
-          //必免重复注册
+          //@ts-ignore
           orm.register(m);
         }
       });
-    function defaultUpdater(session: any, action: any) {
+    function defaultUpdater(
+      session: Session<IndexedModelClasses>,
+      action: AnyAction
+    ) {
       session.sessionBoundModels.forEach(function(modelClass: any) {
         /* istanbul ignore else */
         if (typeof modelClass.reducer === 'function') {
@@ -115,9 +136,9 @@ export default class Store {
         }
       });
     }
-    function createReducer(orm: any) {
+    function createReducer(orm: ORM<IndexedModelClasses>) {
       var updater = defaultUpdater;
-      return function(state: any, action: any) {
+      return function(state: OrmState<IndexedModelClasses>, action: AnyAction) {
         var session = orm.session({...orm.getEmptyState(), ...state});
         updater(session, action);
         return session.state;
@@ -126,18 +147,17 @@ export default class Store {
     this.injectReducer('ORMReducer', createReducer(orm));
   }
 
-  public getStore() {
+  public getStore(): Store {
     return this.store;
   }
 
-  public loadModule(loaded: ModuleShape) {
+  public loadModule(loaded: ModuleShape): Object {
     //@ts-ignore
     let moduleName = loaded.model.default.modelName;
     /* istanbul ignore else */
     if (this.registed.indexOf(moduleName) < 0) {
       this.registed = this.registed.concat([moduleName]);
       this.injectReducer(moduleName, loaded.reducer);
-      //@ts-ignore
       this.store.dispatch({
         type: '@@ModuleMiddleware/register',
         payload: {name: moduleName}
@@ -149,11 +169,11 @@ export default class Store {
   }
 
   @suppressWarnings
-  public registerModule(modulePath: any) {
+  public registerModule(modulePath: any): Promise<ModuleShape> {
     return this.importModule(modulePath);
   }
 
-  public importModule(modulePath: any) {
+  public importModule(modulePath: any): Promise<ModuleShape> {
     return new Promise((resolve: any, reject: any) => {
       modulePath.then((module: ModuleShape) => {
         resolve(this.loadModule(module));

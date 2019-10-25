@@ -1,6 +1,15 @@
-import {Model, ManyToMany, Session} from 'redux-orm';
+import {
+  Model,
+  ManyToMany,
+  Session,
+  CreateProps,
+  ModelFieldMap,
+  SessionBoundModel
+} from 'redux-orm';
 //@ts-ignore
 import {attr} from './Attr.ts';
+import {AnyAction} from 'redux';
+import {SessionState} from 'http2';
 
 function normalizeEntity(entity: any) {
   if (
@@ -15,19 +24,18 @@ function normalizeEntity(entity: any) {
 }
 
 export default class BaseModel extends Model {
-  private _fields: AttributeOpts = {};
+  private _fields: ModelFieldMap = {};
   private static _session?: any;
   private static virtualFields?: any;
 
-  constructor(props: any) {
-    //@ts-ignore
-    super();
+  constructor(props: ModelFieldMap) {
+    super(props);
     this._initFields(props);
     // if(props){
     //   this.init(props)
     // }
   }
-  _initFields(props: any) {
+  _initFields(props: ModelFieldMap): void {
     var _this = this;
     this._fields = Object.assign({}, props);
     for (var p in props) {
@@ -59,7 +67,7 @@ export default class BaseModel extends Model {
     }
     // });
   }
-  static parse(userProps: any) {
+  static parse(userProps: ModelFieldMap): SessionBoundModel {
     if (typeof this._session === 'undefined') {
       throw new Error(
         [
@@ -131,12 +139,16 @@ export default class BaseModel extends Model {
     this._refreshMany2Many(this);
   }
   */
-  toData() {
+  toData(): ModelFieldMap {
     return this._fields;
   }
 }
 
-BaseModel.reducer = function(action: any, modelClass: any, session: any) {
+BaseModel.reducer = function(
+  action: AnyAction,
+  modelClass: any,
+  session: any
+): SessionState {
   const modelName = modelClass.modelName;
   switch (action.type) {
     case `${modelName}/newItem`:
@@ -147,11 +159,11 @@ BaseModel.reducer = function(action: any, modelClass: any, session: any) {
       modelClass
         .all()
         .toModelArray()
-        .forEach((model: any) => model.delete());
-      action.payload.items.map((m: any) => modelClass.create(m));
+        .forEach((model: SessionBoundModel) => model.delete());
+      action.payload.items.map((m: SessionBoundModel) => modelClass.create(m));
       break;
     case `${modelName}/saveList`:
-      action.payload.items.map((m: any) => modelClass.create(m));
+      action.payload.items.map((m: SessionBoundModel) => modelClass.create(m));
       break;
     case `${modelName}/updateItem`:
       modelClass.withId(action.payload.id).update(action.payload);

@@ -32,8 +32,6 @@ export default class Attr extends Attribute {
     const mapperFieldName = this.fieldName || fieldName;
     return {
       get() {
-        // console.log(mapperFieldName,getMethod)
-        //@ts-ignore
         return getMethod
           ? //@ts-ignore
             //@ts-ignore
