@@ -1,9 +1,10 @@
 {
   "name": "@mcf/core",
-  "version": "0.1.8",
+  "version": "0.1.10",
   "description": "@mcf for core",
   "main": "umd/index.js",
   "module": "cjs/index.js",
+  "typings": "modules/index.d.ts",
   "scripts": {
     "test": "jest",
     "dev": "rollup -c --watch",

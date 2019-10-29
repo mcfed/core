@@ -12,7 +12,8 @@ const input = './modules/index.ts';
 const globals = {
   qs: 'qs',
   redux: 'redux',
-  'redux-orm': 'redux-orm'
+  'redux-orm': 'redux-orm',
+  'redux-saga': 'redux-saga'
 };
 
 const commonjsOptions = {
