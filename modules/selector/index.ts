@@ -1,4 +1,12 @@
 import {createSelector} from 'reselect';
+import {getDictList, getDictLabel} from './utils';
+export {
+  reducerItemSelector,
+  reducerListSelector,
+  reducerModel,
+  reducerPageSelector,
+  reducerListSelectorFilter
+} from './reducerSelector';
 
 export const fetchingSelector = (state: any) => state.fetchingReducer;
 export const appSelector = (state: any) => state.appSelector;
@@ -32,11 +40,26 @@ export function spins(type: Function | string) {
   );
 }
 
-export function query(type: Function | string) {
+export function querys(type: Function | string) {
   return createSelector(
     [querysSelector],
     querys => {
       return querys.get(type.toString ? type.toString() : type) || {};
+    }
+  );
+}
+
+export function dicts(type: string, value: any) {
+  const args = arguments;
+  return createSelector(
+    [dictsSelector],
+    dicts => {
+      if (args.length > 1) {
+        return getDictLabel(dicts, type, value);
+      } else if (args.length == 1) {
+        return getDictList(dicts, type);
+      }
+      return '';
     }
   );
 }

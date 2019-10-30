@@ -1,5 +1,5 @@
 import {createSelector, SessionBoundModel} from 'redux-orm';
-import {orm} from './';
+import {orm} from '../model';
 import {Reducer} from 'redux';
 import {OrmSession} from 'redux-orm/Session';
 import {IndexedModelClasses} from 'redux-orm/ORM';
@@ -35,7 +35,7 @@ export function reducerListSelector(reducer: Reducer, modelName: string) {
   return createSelector(
     orm,
     //@ts-ignore
-    (session: any) => {
+    (session: Session<IndexedModelClasses>) => {
       return session[modelName]
         .all()
         .filter(
@@ -57,7 +57,7 @@ export function reducerModel(reducer: Reducer, modelName: string) {
   return createSelector(
     orm,
     //@ts-ignore
-    (session: any) => {
+    (session: Session<IndexedModelClasses>) => {
       return session[modelName];
     }
   )(reducer);
@@ -69,7 +69,7 @@ export function reducerModel(reducer: Reducer, modelName: string) {
  *
  **/
 
-export function reducerListPageSelector(
+export function reducerPageSelector(
   reducer: Reducer,
   modelName: string,
   props: Object
@@ -77,7 +77,7 @@ export function reducerListPageSelector(
   return createSelector(
     orm,
     //@ts-ignore
-    (session: any) => {
+    (session: Session<IndexedModelClasses>) => {
       return session[modelName].all().toModelArray();
     }
   )(reducer);
@@ -91,7 +91,7 @@ export function reducerListSelectorFilter(
   return createSelector(
     orm,
     //@ts-ignore
-    (session: any) => {
+    (session: Session<IndexedModelClasses>) => {
       return session[modelName]
         .all()
         .filter(filterCallback)

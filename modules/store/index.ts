@@ -70,6 +70,7 @@ export default class StoreManager<
       (store: any) => {
         this.sagaMiddleware = createSagaMiddleware({
           sagaMonitor: createSagaMonitor({
+            //@ts-ignore
             rootReducer: this.asyncReducers,
             storeDispatch: store.dispatch
           })

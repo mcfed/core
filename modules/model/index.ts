@@ -1,7 +1,6 @@
 import {ORM, createSelector, ORMOpts, OrmState} from 'redux-orm';
 import BaseModel from './BaseModel';
 import Attr, {attr} from './Attr';
-import {reducerListPageSelector, reducerItemSelector} from './reducerSelector';
 import {IndexedModelClasses} from 'redux-orm/ORM';
 
 //@ts-ignore
@@ -24,12 +23,4 @@ class ModelORM extends ORM {
 //@ts-ignore
 const orm = new ModelORM();
 
-export {
-  orm,
-  ModelORM,
-  BaseModel,
-  Attr,
-  attr,
-  reducerListPageSelector,
-  reducerItemSelector
-};
+export {orm, ModelORM, BaseModel, Attr, attr};
