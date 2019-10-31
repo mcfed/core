@@ -17,26 +17,14 @@ import {
   sagaMiddleware
 } from '../middleware';
 import {orm} from '../model';
-import Model, {
-  ORM,
-  Session,
-  TableState,
-  OrmState,
-  SessionBoundModel
-} from 'redux-orm';
+import Model, {ORM, Session, OrmState, SessionBoundModel} from 'redux-orm';
 import {IndexedModelClasses} from 'redux-orm/ORM';
 import {Location} from 'history';
+import {ModuleShape} from '../index.d';
 
 const {fetchingReducer} = fetchingMiddleware;
 const globalReducer = moduleMiddleware.default;
 const createSagaMonitor = sagaMiddleware.default;
-
-interface ModuleShape {
-  default: Object;
-  model: Model;
-  reducer: Reducer;
-  saga: Saga;
-}
 
 /**
  *  let store = new Store({reducers:{},middleares:[]})
@@ -82,6 +70,7 @@ export default class StoreManager<
       (store: any) => {
         this.sagaMiddleware = createSagaMiddleware({
           sagaMonitor: createSagaMonitor({
+            //@ts-ignore
             rootReducer: this.asyncReducers,
             storeDispatch: store.dispatch
           })

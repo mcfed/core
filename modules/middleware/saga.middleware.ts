@@ -2,7 +2,8 @@ import createSagaMiddleware from 'redux-saga';
 import * as is from '@redux-saga/is';
 import {SAGA_ACTION} from '@redux-saga/symbols';
 import * as asEffect from 'redux-saga/effects';
-import {createStore, combineReducers} from 'redux';
+import {createStore, combineReducers, AnyAction, Store} from 'redux';
+import {StrictEffect} from 'redux-saga/effects';
 
 export const EFFECT_TRIGGERED = 'EFFECT_TRIGGERED';
 export const EFFECT_RESOLVED = 'EFFECT_RESOLVED';
@@ -17,25 +18,28 @@ export const STATUS_CANCELLED = 'STATUS_CANCELLED';
 
 const CHILDREN = Symbol('CHILDREN');
 
-function getPathToEffect(effect, effectsById) {
+function getPathToEffect(effect: any, effectsById: any) {
   let effectId = effect.effectId;
   const path = [effectId];
-  effectId = effect ? effect.parentEffectId : effectId;
-  if (effectId) {
-    path.push(effectId);
-    effect = effectsById[effectId];
+
+  while (effectId) {
+    effectId = effect.parentEffectId;
+    if (effectId) {
+      path.push(effectId);
+      effect = effectsById[effectId];
+    }
   }
   return path.reverse();
 }
 
-export function rootEffectIds(state = [], action) {
+export function rootEffectIds(state = [], action: AnyAction) {
   if (action.type === EFFECT_TRIGGERED && action.effect.root) {
     return [...state, action.effect.effectId];
   }
   return state;
 }
 
-export function effectIds(state = [], action) {
+export function effectIds(state = [], action: AnyAction) {
   switch (action.type) {
     case EFFECT_TRIGGERED:
       return state.concat(action.effect.effectId);
@@ -44,7 +48,7 @@ export function effectIds(state = [], action) {
   }
 }
 
-export function effectsById(state = {}, action) {
+export function effectsById(state = {}, action: AnyAction) {
   let effectId, effect, newState;
   switch (action.type) {
     case EFFECT_TRIGGERED:
@@ -67,6 +71,7 @@ export function effectsById(state = {}, action) {
         this shouldn't be accessed by any other outside UI
         it's only there so the maybeSetRaceWinner could access race's children
       **/
+      //@ts-ignore
       const parent = state[effect.parentEffectId];
       if (parent && asEffect.race(parent.effect)) {
         parent[CHILDREN].push(effect);
@@ -75,9 +80,11 @@ export function effectsById(state = {}, action) {
 
     case EFFECT_RESOLVED:
       effectId = action.effectId;
+      //@ts-ignore
       effect = state[effectId];
       newState = {
         ...state,
+        //@ts-ignore
         [effectId]: settleEffect(effect, action)
       };
       // console.log(effect,action.result,newState)
@@ -86,12 +93,14 @@ export function effectsById(state = {}, action) {
       effectId = action.effectId;
       return {
         ...state,
+        //@ts-ignore
         [effectId]: settleEffect(state[effectId], action, true)
       };
     case EFFECT_CANCELLED:
       effectId = action.effectId;
       return {
         ...state,
+        //@ts-ignore
         [effectId]: cancelEffect(state[effectId], action)
       };
     default:
@@ -99,31 +108,41 @@ export function effectsById(state = {}, action) {
   }
 }
 
-function settleEffect(effect, action, isError) {
+//@ts-ignore
+function settleEffect(effect: StrictEffect, action: AnyAction, isError) {
   return {
     ...effect,
     result: action.result,
     error: action.error,
     status: isError ? STATUS_REJECTED : STATUS_RESOLVED,
     end: action.time,
+    //@ts-ignore
     time: action.time - effect.start
   };
 }
 
-function cancelEffect(effect, action) {
+function cancelEffect(effect: StrictEffect, action: AnyAction) {
   return {
     ...effect,
     status: STATUS_CANCELLED,
     end: action.time,
+    //@ts-ignore
     time: action.time - effect.start
   };
 }
-
-export function effectsByParentId(state = {}, action) {
+function getTime() {
+  //@ts-ignore
+  if (typeof performance !== 'undefined' && performance.now)
+    //@ts-ignore
+    return performance.now();
+  else return Date.now();
+}
+export function effectsByParentId(state = {}, action: AnyAction) {
   if (action.type === EFFECT_TRIGGERED) {
     const effect = action.effect;
     const parentId = effect.parentEffectId;
     if (parentId) {
+      //@ts-ignore
       const siblings = state[parentId];
       return {
         ...state,
@@ -136,7 +155,7 @@ export function effectsByParentId(state = {}, action) {
   return state;
 }
 
-function maybeSetRaceWinner(effect, result, state) {
+function maybeSetRaceWinner(effect: any, result: Object, state: any) {
   if (asEffect.race(effect.effect)) {
     const label = Object.keys(result)[0];
     const children = effect[CHILDREN];
@@ -154,16 +173,17 @@ function maybeSetRaceWinner(effect, result, state) {
   }
   return state;
 }
-
+//@ts-ignore
 export function dispatchedActions(state = [], monitorAction) {
   if (monitorAction.type === ACTION_DISPATCHED) {
     const {id, action, time, isSagaAction} = monitorAction;
+    //@ts-ignore
     return state.concat({id, action, time, isSagaAction});
   }
   return state;
 }
 
-export function sharedRef(state = {}, action) {
+export function sharedRef(state = {}, action: AnyAction) {
   if (action.type === SET_SHARED_REF) {
     return {
       ...state,
@@ -174,6 +194,7 @@ export function sharedRef(state = {}, action) {
 }
 
 const reducers = combineReducers({
+  //@ts-ignore
   rootEffectIds,
   effectIds,
   effectsById,
@@ -182,26 +203,28 @@ const reducers = combineReducers({
   sharedRef
 });
 
-function getTime() {
-  if (typeof performance !== 'undefined' && performance.now)
-    return performance.now();
-  else return Date.now();
-}
-
+//@ts-ignore
 export function createSagaMonitor({
+  //@ts-ignore
   rootReducer,
+  //@ts-ignore
   storeDispatch,
+  //@ts-ignore
   time = getTime,
+  //@ts-ignore
   dispatch: customDispatch
 } = {}) {
+  //@ts-ignore
   let store;
+  //@ts-ignore
   let dispatch;
 
   store = createStore(reducers);
   dispatch = store.dispatch;
 
-  function effectTriggered(effect) {
+  function effectTriggered(effect: StrictEffect) {
     // console.log(arguments)
+    //@ts-ignore
     dispatch({
       type: EFFECT_TRIGGERED,
       effect,
@@ -210,7 +233,7 @@ export function createSagaMonitor({
     // console.log(effect)
   }
 
-  function effectResolved(effectId, result) {
+  function effectResolved(effectId: number, result: any) {
     // console.log(effectId, result)
     if (is.task(result)) {
       // console.log(store.getState().effectsById,effectId)
@@ -220,8 +243,8 @@ export function createSagaMonitor({
           else effectResolved(effectId, taskResult);
           storeDispatch({
             type: '@@MIDDLEWARE/FETCH_RES',
-            payload: store.getState().effectsById[effectId].effect.payload
-              .args[0],
+            //@ts-ignore
+            payload: store.getState().effectsById[effectId].effect.FORK.args[0],
             [SAGA_ACTION]: true
           });
         },
@@ -231,13 +254,15 @@ export function createSagaMonitor({
           if (!taskError) {
             storeDispatch({
               type: '@@MIDDLEWARE/FETCH_RES',
-              payload: store.getState().effectsById[effectId].effect.payload
+              //@ts-ignore
+              payload: store.getState().effectsById[effectId].effect.FORK
                 .args[0],
               [SAGA_ACTION]: true
             });
           } else {
             storeDispatch({
               type: '@@MIDDLEWARE/FETCH_RES',
+              //@ts-ignore
               payload: store.getState().effectsById[effectId].effect.payload
                 .args[0],
               [SAGA_ACTION]: true
@@ -253,34 +278,38 @@ export function createSagaMonitor({
         result,
         time: time()
       };
+      //@ts-ignore
       dispatch(action);
     }
   }
 
-  function effectRejected(effectId, error) {
+  function effectRejected(effectId: number, error: any) {
     const action = {
       type: EFFECT_REJECTED,
       effectId,
       error,
       time: time()
     };
+    //@ts-ignore
     dispatch(action);
   }
 
-  function effectCancelled(effectId) {
+  function effectCancelled(effectId: number) {
     const action = {
       type: EFFECT_CANCELLED,
       effectId,
       time: time()
     };
     // console.log("effectCancelled action",action)
+    //@ts-ignore
     dispatch(action);
   }
 
-  function actionDispatched(action) {
+  function actionDispatched(action: AnyAction) {
     const isSagaAction = action[SAGA_ACTION];
     const now = time();
 
+    //@ts-ignore
     dispatch({
       type: ACTION_DISPATCHED,
       id: now,
@@ -311,6 +340,7 @@ export function createSagaMonitor({
 
   return {
     get store() {
+      //@ts-ignore
       return store;
     },
     effectTriggered,
@@ -321,8 +351,9 @@ export function createSagaMonitor({
   };
 }
 
-export default function sagaMonitorMiddleware({getState, dispatch}) {
+export default function sagaMonitorMiddleware({getState, dispatch}: Store) {
   return createSagaMiddleware({
+    //@ts-ignore
     sagaMonitor: createSagaMonitor({
       rootReducer: reducers,
       storeDispatch: dispatch
