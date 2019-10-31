@@ -21,10 +21,13 @@ const CHILDREN = Symbol('CHILDREN');
 function getPathToEffect(effect: any, effectsById: any) {
   let effectId = effect.effectId;
   const path = [effectId];
-  effectId = effect ? effect.parentEffectId : effectId;
-  if (effectId) {
-    path.push(effectId);
-    effect = effectsById[effectId];
+
+  while (effectId) {
+    effectId = effect.parentEffectId;
+    if (effectId) {
+      path.push(effectId);
+      effect = effectsById[effectId];
+    }
   }
   return path.reverse();
 }
@@ -241,8 +244,7 @@ export function createSagaMonitor({
           storeDispatch({
             type: '@@MIDDLEWARE/FETCH_RES',
             //@ts-ignore
-            payload: store.getState().effectsById[effectId].effect.payload
-              .args[0],
+            payload: store.getState().effectsById[effectId].effect.FORK.args[0],
             [SAGA_ACTION]: true
           });
         },
@@ -253,7 +255,7 @@ export function createSagaMonitor({
             storeDispatch({
               type: '@@MIDDLEWARE/FETCH_RES',
               //@ts-ignore
-              payload: store.getState().effectsById[effectId].effect.payload
+              payload: store.getState().effectsById[effectId].effect.FORK
                 .args[0],
               [SAGA_ACTION]: true
             });

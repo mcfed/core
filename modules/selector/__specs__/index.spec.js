@@ -1,4 +1,5 @@
 import * as Selector from '../index';
+import {createSelector} from 'reselect';
 
 let fetchingMap = new Map();
 fetchingMap.set('f', true);
@@ -53,17 +54,30 @@ describe('selector unit case', () => {
   });
 
   it('spins', function() {
-    expect(Selector.spins('f')(state)).toEqual(fetchingMap.get('f'));
+    expect(Selector.spins(state, 'f')).toEqual(fetchingMap.get('f'));
   });
   it('query', function() {
-    expect(Selector.querys('q')(state)).toEqual(querysMap.get('q'));
+    expect(Selector.querys(state, 'q')).toEqual(querysMap.get('q'));
   });
 
   it('dicts', function() {
-    expect(Selector.dicts('a')(state)).toEqual(dicts.a);
+    expect(Selector.dicts(state, 'a')).toEqual(dicts.a);
   });
 
   it('dicts type value', function() {
-    expect(Selector.dicts('a', 1)(state)).toEqual('a');
+    expect(Selector.dicts(state, 'a', 1)).toEqual('a');
+  });
+});
+describe('reselector unit case', () => {
+  it('reselect containerStructuredSelector', () => {
+    expect(Selector.containerStructuredSelector(state)).toHaveProperty('dicts');
+    expect(Selector.containerStructuredSelector(state)).toHaveProperty(
+      'querys'
+    );
+    expect(Selector.containerStructuredSelector(state)).toHaveProperty('spins');
+  });
+
+  xit('reselect crudStructuredSelector', function() {
+    console.log(Selector.crudStructuredSelector(state, '', {}));
   });
 });
