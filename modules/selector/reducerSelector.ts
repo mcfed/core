@@ -2,6 +2,7 @@ import {createSelector, SessionBoundModel} from 'redux-orm';
 import {orm} from '../model';
 import {IndexedModelClasses} from 'redux-orm/ORM';
 
+
 export const ormSelector = (state: any) => state.ORMReducer;
 
 /**
@@ -9,6 +10,7 @@ export const ormSelector = (state: any) => state.ORMReducer;
  *
  *
  **/
+
 
 export function reducerItemSelector(
   state: any,
@@ -31,7 +33,7 @@ export function reducerItemSelector(
  *
  **/
 
-export function reducerListSelector(state: any, modelName: string) {
+export function reducerListSelector(state:any, modelName: string) {
   return createSelector(
     orm,
     //@ts-ignore
@@ -53,7 +55,7 @@ export function reducerListSelector(state: any, modelName: string) {
  *
  **/
 
-export function reducerModel(state: any, modelName: string) {
+export function reducerModel(state:any, modelName: string) {
   return createSelector(
     orm,
     //@ts-ignore
@@ -99,3 +101,4 @@ export function reducerListSelectorFilter(
     }
   )(ormSelector(state));
 }
+

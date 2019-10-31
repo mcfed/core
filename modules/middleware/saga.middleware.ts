@@ -18,19 +18,20 @@ export const STATUS_CANCELLED = 'STATUS_CANCELLED';
 
 const CHILDREN = Symbol('CHILDREN');
 
-function getPathToEffect(effect: any, effectsById: any) {
-  let effectId = effect.effectId;
-  const path = [effectId];
+function getPathToEffect(effect:any, effectsById:any) {
+  let effectId = effect.effectId
+  const path = [effectId]
 
   while (effectId) {
-    effectId = effect.parentEffectId;
+    effectId = effect.parentEffectId
     if (effectId) {
-      path.push(effectId);
-      effect = effectsById[effectId];
+      path.push(effectId)
+      effect = effectsById[effectId]
     }
   }
-  return path.reverse();
+  return path.reverse()
 }
+
 
 export function rootEffectIds(state = [], action: AnyAction) {
   if (action.type === EFFECT_TRIGGERED && action.effect.root) {
@@ -241,24 +242,17 @@ export function createSagaMonitor({
         taskResult => {
           if (result.isCancelled()) effectCancelled(effectId);
           else effectResolved(effectId, taskResult);
-          storeDispatch({
-            type: '@@MIDDLEWARE/FETCH_RES',
-            //@ts-ignore
-            payload: store.getState().effectsById[effectId].effect.FORK.args[0],
-            [SAGA_ACTION]: true
-          });
+          storeDispatch({ type: "@@MIDDLEWARE/FETCH_RES",
+          //@ts-ignore
+          payload: store.getState().effectsById[effectId].effect.FORK.args[0], [SAGA_ACTION]: true })
         },
         taskError => {
           // console.log(effectId,taskError)
           effectRejected(effectId, taskError);
           if (!taskError) {
-            storeDispatch({
-              type: '@@MIDDLEWARE/FETCH_RES',
-              //@ts-ignore
-              payload: store.getState().effectsById[effectId].effect.FORK
-                .args[0],
-              [SAGA_ACTION]: true
-            });
+            storeDispatch({ type: "@@MIDDLEWARE/FETCH_RES",
+            //@ts-ignore
+            payload: store.getState().effectsById[effectId].effect.FORK.args[0], [SAGA_ACTION]: true })
           } else {
             storeDispatch({
               type: '@@MIDDLEWARE/FETCH_RES',
