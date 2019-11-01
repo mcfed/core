@@ -69,14 +69,6 @@ describe('selector unit case', () => {
   });
 });
 describe('reselector unit case', () => {
-  it('reselect containerStructuredSelector', () => {
-    expect(Selector.containerStructuredSelector(state)).toHaveProperty('dicts');
-    expect(Selector.containerStructuredSelector(state)).toHaveProperty(
-      'querys'
-    );
-    expect(Selector.containerStructuredSelector(state)).toHaveProperty('spins');
-  });
-
   xit('reselect crudStructuredSelector', function() {
     console.log(Selector.crudStructuredSelector(state, '', {}));
   });

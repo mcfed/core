@@ -13,7 +13,9 @@ const globals = {
   redux: 'redux',
   'redux-orm': 'redux-orm',
   'redux-saga': 'redux-saga',
-  reselect: 'reselect'
+  reselect: 'reselect',
+  'react-redux': 'react-redux',
+  'react-intl': 'react-intl'
 };
 
 const commonjsOptions = {
