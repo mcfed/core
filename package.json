@@ -1,6 +1,6 @@
 {
   "name": "@mcf/core",
-  "version": "0.3.0",
+  "version": "0.3.2",
   "description": "@mcf for core",
   "main": "umd/index.js",
   "module": "cjs/index.js",
@@ -43,6 +43,7 @@
     "@commitlint/config-conventional": "^8.1.0",
     "@types/history": "^4.7.3",
     "@types/jest": "^24.0.15",
+    "@types/react-redux": "^7.1.5",
     "@types/redux-orm": "^0.13.5",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
@@ -55,6 +56,8 @@
     "minami": "^1.2.3",
     "prettier": "^1.14.3",
     "pretty-quick": "^1.4.1",
+    "react-intl": "^3.4.0",
+    "react-redux": "^7.1.1",
     "rollup": "^0.66.6",
     "rollup-plugin-extensions": "^0.1.0",
     "rollup-plugin-local-resolve": "^1.0.7",
@@ -69,7 +72,7 @@
   "dependencies": {
     "core-decorators": "^0.20.0",
     "redux": "^4.0.1",
-    "redux-orm": "^0.12.2",
+    "redux-orm": "0.12.4",
     "redux-saga": "^1.0.0"
   }
 }

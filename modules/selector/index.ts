@@ -4,29 +4,28 @@ import {
   reducerModel,
   reducerListSelector,
   reducerItemSelector,
-  reducerListSelectorFilter,
   reducerPageSelector
 } from './reducerSelector';
 
 export const fetchingStructured = (state: any) => state.fetchingReducer;
-export const appStructured = (state: any) => state.appSelector;
+export const appStructured = (state: any) => state.appReducer;
 
 export const spinsSelector = createSelector(
   [fetchingStructured],
-  selector => {
+  (selector: any) => {
     return selector.fetching;
   }
 );
 export const querysSelector = createSelector(
   [fetchingStructured],
-  selector => {
+  (selector: any) => {
     return selector.params;
   }
 );
 
 export const dictsSelector = createSelector(
   [appStructured],
-  selector => {
+  (selector: any) => {
     return selector.dicts;
   }
 );
@@ -37,8 +36,8 @@ export const reducerSelector = (state: any, namespace: string) =>
 export function spins(state: any, type: string) {
   return createSelector(
     [spinsSelector],
-    spins => {
-      return spins.get(type.toString ? type.toString() : type);
+    (spins: any) => {
+      return spins.get(type);
     }
   )(state);
 }
@@ -46,8 +45,8 @@ export function spins(state: any, type: string) {
 export function querys(state: any, type: string) {
   return createSelector(
     [querysSelector],
-    querys => {
-      return querys.get(type.toString ? type.toString() : type) || {};
+    (querys: any) => {
+      return querys.get(type) || {};
     }
   )(state);
 }
@@ -56,7 +55,7 @@ export function dicts(state: any, type: string, value: any) {
   const args = arguments;
   return createSelector(
     [dictsSelector],
-    dicts => {
+    (dicts: any) => {
       if (args.length > 2) {
         return getDictLabel(dicts, type, value);
       } else if (args.length == 2) {
@@ -64,12 +63,11 @@ export function dicts(state: any, type: string, value: any) {
       } else {
         return dicts;
       }
-      return '';
     }
   )(state);
 }
 
-export function crudStructuredSelector(namespace: string, props: object) {
+export function containerSelector(namespace: string, props: object) {
   //@ts-ignore
   let id = '';
   //@ts-ignore
@@ -86,18 +84,9 @@ export function crudStructuredSelector(namespace: string, props: object) {
   });
 }
 
-export function containerStructuredSelector(state: any) {
-  return {
-    querys: (type: string) => querys(state, type),
-    spins: (type: string) => spins(state, type),
-    dicts: (type: string, value: any) => dicts(state, type, value)
-  };
-}
-
 export {
   reducerModel,
   reducerListSelector,
   reducerItemSelector,
-  reducerListSelectorFilter,
   reducerPageSelector
 };

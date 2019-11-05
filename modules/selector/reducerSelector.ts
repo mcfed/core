@@ -4,6 +4,7 @@ import {IndexedModelClasses} from 'redux-orm/ORM';
 
 export const ormSelector = (state: any) => state.ORMReducer;
 
+let defaultFilterCallback = () => true;
 /**
  *   getItem by key
  *
@@ -20,7 +21,7 @@ export function reducerItemSelector(
     (session: any) => {
       return session[modelName].idExists(key)
         ? session[modelName].withId(key)
-        : session[modelName].create({});
+        : session[modelName].parse({});
     }
   )(ormSelector(state));
 }
@@ -31,18 +32,25 @@ export function reducerItemSelector(
  *
  **/
 
-export function reducerListSelector(state: any, modelName: string) {
+export function reducerListSelector(
+  state: any,
+  modelName: string,
+  filterCB: Function = defaultFilterCallback
+): Array<SessionBoundModel> {
   return createSelector(
     orm,
     //@ts-ignore
     (session: Session<IndexedModelClasses>) => {
-      return session[modelName]
-        .all()
-        .filter(
-          (model: SessionBoundModel) =>
-            !(JSON.stringify(model) === '{}' || model.id === '')
-        )
-        .toModelArray();
+      return (
+        session[modelName]
+          .all()
+          // .filter(
+          //   (model: SessionBoundModel) =>
+          //     !(JSON.stringify(model) === '{}' || model.id === '')
+          // )
+          .filter(filterCB)
+          .toModelArray()
+      );
     }
   )(ormSelector(state));
 }
@@ -53,7 +61,10 @@ export function reducerListSelector(state: any, modelName: string) {
  *
  **/
 
-export function reducerModel(state: any, modelName: string) {
+export function reducerModel(
+  state: any,
+  modelName: string
+): Array<SessionBoundModel> {
   return createSelector(
     orm,
     //@ts-ignore
@@ -72,30 +83,14 @@ export function reducerModel(state: any, modelName: string) {
 export function reducerPageSelector(
   state: any,
   modelName: string,
-  props: Object
-) {
+  props: Object,
+  filterCB: Function = defaultFilterCallback
+): Array<SessionBoundModel> {
   return createSelector(
     orm,
     //@ts-ignore
     (session: Session<IndexedModelClasses>) => {
       return session[modelName].all().toModelArray();
-    }
-  )(ormSelector(state));
-}
-
-export function reducerListSelectorFilter(
-  state: any,
-  modelName: string,
-  filterCallback: Function
-) {
-  return createSelector(
-    orm,
-    //@ts-ignore
-    (session: Session<IndexedModelClasses>) => {
-      return session[modelName]
-        .all()
-        .filter(filterCallback)
-        .toModelArray();
     }
   )(ormSelector(state));
 }

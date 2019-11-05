@@ -37,7 +37,10 @@ export default class StoreManager<
 > {
   // private history : any = null
   private registed: Array<string> = [];
-  private asyncReducers: ReducersMapObject<IndexedModelClasses, AnyAction> = [];
+  private asyncReducers: ReducersMapObject<
+    IndexedModelClasses<I>,
+    AnyAction
+  > = [];
   private sagaMiddleware!: SagaMiddleware;
 
   protected store: Store;

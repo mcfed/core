@@ -14,6 +14,15 @@
 
 <!-- Your comment below this -->
 
+# 0.3.2
+
+- feature: 内置 Container 支持 connectContainer 缺省参数 [@jaxchow]
+- unit: Model 代码单元测试 [@jaxchow]
+
+# 0.3.1
+
+- feature: 内置 Container 支持 [@jaxchow]
+
 # 0.3.0
 
 - feature: 内置常用 Selector 方法提供使用 [@jaxchow]

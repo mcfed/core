@@ -41,15 +41,15 @@ export function getDictLabel<T extends Dict<T>>(
   value: any
 ) {
   let label = '';
-  try {
-    const map = getDictList(dictData, dicName);
-    map.forEach((arr: T) => {
-      if (arr.value === value) {
-        label = arr.label;
-      }
-    });
-  } catch (e) {
-    console.log(e);
-  }
+  // try {
+  const map = getDictList(dictData, dicName);
+  map.forEach((arr: T) => {
+    if (arr.value === value) {
+      label = arr.label;
+    }
+  });
+  // } catch (e) {
+  //   console.log(e);
+  // }
   return label;
 }

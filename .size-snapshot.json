@@ -8,5 +8,15 @@
     "bundled": 50633,
     "minified": 22632,
     "gzipped": 7309
+  },
+  "cjs/index.js": {
+    "bundled": 63449,
+    "minified": 32202,
+    "gzipped": 9282
+  },
+  "umd/index.js": {
+    "bundled": 71149,
+    "minified": 23691,
+    "gzipped": 7371
   }
 }

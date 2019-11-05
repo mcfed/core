@@ -5,6 +5,13 @@ const UPGRADE_USER = '@@MIDDLEWARE/UPGRADE_USER';
 const UPGRADE_AUTHS = '@@MIDDLEWARE/UPGRADE_AUTHS';
 export const CANCEL_TASK = '@@MIDDLEWARE/CANCEL_TASK';
 
+export function cancelTask(payload: any) {
+  return {
+    type: CANCEL_TASK,
+    payload
+  };
+}
+
 export function upgradeDict(payload: any) {
   return {
     type: UPGRADE_DICT,

@@ -4,4 +4,4 @@ import reducer from './reducer';
 import * as model from './model';
 
 export {saga, reducer, router, model};
-export default () => router;
+export default router;
