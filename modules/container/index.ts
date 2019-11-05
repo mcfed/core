@@ -1,4 +1,4 @@
-import {injectIntl} from 'react-intl';
+import {injectIntl, defineMessages} from 'react-intl';
 import {bindActionCreators as bindActions, AnyAction, Dispatch} from 'redux';
 import {connect} from 'react-redux';
 import * as Selector from '../selector';
@@ -40,40 +40,43 @@ export function connectContainer(
   };
 }
 
-//@ts-ignore
 export const defaultMergeProps = (
   state: any,
+  //@ts-ignore
   {dispatch, actions},
   ownProps: any
 ) => {
-  // console.log(ownProps)
-  actions &&
-    Object.assign(actions, {
+  let {sagaActions, ...otherState} = state;
+  if (sagaActions) {
+    actions = {
+      ...bindActionCreators(sagaActions, dispatch),
       cancelAction: function(action: AnyAction) {
         dispatch(cancelTask(action.toString()));
       }
-    });
+    };
+  }
+  const messages = defineMessages(state.messages);
   return Object.assign(
     {},
     ownProps,
-    state,
+    otherState,
     {dispatch, actions},
     {
-      spins: function(type: string) {
-        return Selector.spins(state, type);
+      spins: function(type: Function) {
+        return Selector.spins(state, type.toString());
       },
-      querys: function(type: string) {
-        return Selector.querys(state, type);
+      querys: function(type: Function) {
+        return Selector.querys(state, type.toString());
       },
       dicts: function(type: string, value: any) {
         return Selector.dicts(state, type, value);
       },
       locale: function(type: string, vars: any) {
-        if (state.intl) {
-          if (state.messages[type]) {
-            return state.intl.formatMessage(state.messages[type], vars);
+        if (ownProps.intl) {
+          if (messages[type]) {
+            return ownProps.intl.formatMessage(messages[type], vars);
           } else {
-            return state.intl.formatMessage({id: type}, vars);
+            return ownProps.intl.formatMessage({id: type}, vars);
           }
         }
         return '';

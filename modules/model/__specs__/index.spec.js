@@ -20,7 +20,11 @@ describe('ORM initial', () => {
         return 'http://' + val;
       }
     }),
-    serverPort: attr(),
+    serverPort: attr({
+      set: function(val) {
+        this._fields['serverPort'] = val;
+      }
+    }),
     serverAddress: attr({
       get: function(val, row) {
         return [row.serverIp, row.serverPort].join(':');
@@ -33,11 +37,19 @@ describe('ORM initial', () => {
         return val === '1' ? '启用' : '禁用';
       }
     }),
-    columns: many('TestPropModel', 'tableId')
+    url: attr({
+      getDefault: function() {
+        return '8080';
+      }
+    })
+    // columns: many('TestPropModel', 'tableId')
   });
   class TestPropModel extends BaseModel {
     static modelName = 'TestPropModel';
     static fields = {};
+    getId() {
+      return '';
+    }
   }
   Object.assign(TestPropModel.fields, BaseModel.fields, {
     id: attr(),
@@ -85,7 +97,7 @@ describe('ORM initial', () => {
       serverPort: '8888',
       ip: 'address'
     };
-    expect(Test.parse(obj).toData()).toEqual(obj);
+    expect(Test.parse(obj).toData()).toEqual({...obj, url: '8080'});
     expect(Test.idExists('aaa')).toEqual(false);
     //console.log(Test.all().toModelArray())
     // expect(testModel.serverName).toBe("abd")
@@ -144,9 +156,67 @@ describe('ORM initial', () => {
       props1: 'aa',
       props2: 'bb'
     });
-    // console.log(t1,t2)
+
+    // t1.abcd="abc"
+    // expect(t1.abcd).toBe(null)
 
     done();
+  });
+
+  it('newItem', () => {
+    expect(
+      TestModel.reducer({type: 'TestModel/newItem', payload: {}}, Test, session)
+    ).toEqual(session.state);
+  });
+
+  it('savePage', () => {
+    expect(
+      TestModel.reducer(
+        {type: 'TestModel/savePage', payload: {items: [{id: 'abed'}]}},
+        Test,
+        session
+      )
+    ).toEqual(session.state);
+  });
+
+  it('saveList', () => {
+    expect(
+      TestModel.reducer(
+        {type: 'TestModel/saveList', payload: {items: [{id: 'aa'}]}},
+        Test,
+        session
+      )
+    ).toEqual(session.state);
+  });
+
+  it('saveItem', () => {
+    expect(
+      TestModel.reducer(
+        {type: 'TestModel/saveItem', payload: {}},
+        Test,
+        session
+      )
+    ).toEqual(session.state);
+  });
+
+  it('updateItem', () => {
+    expect(
+      TestModel.reducer(
+        {type: 'TestModel/updateItem', payload: {id: 'abc'}},
+        Test,
+        session
+      )
+    ).toEqual(session.state);
+  });
+
+  it('deleteItem', () => {
+    expect(
+      TestModel.reducer(
+        {type: 'TestModel/deleteItem', payload: 'abc'},
+        Test,
+        session
+      )
+    ).toEqual(session.state);
   });
 });
 describe('SqlWhiteListSetting', () => {

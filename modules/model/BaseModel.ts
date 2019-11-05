@@ -68,15 +68,15 @@ export default class BaseModel extends Model {
     // });
   }
   static parse(userProps: ModelFieldMap): SessionBoundModel {
-    if (typeof this._session === 'undefined') {
-      throw new Error(
-        [
-          `Tried to create a ${this.modelName} model instance without a session. `,
-          'Create a session using `session = orm.session()` and call ',
-          `\`session["${this.modelName}"].create\` instead.`
-        ].join('')
-      );
-    }
+    // if (typeof this._session === 'undefined') {
+    //   throw new Error(
+    //     [
+    //       `Tried to create a ${this.modelName} model instance without a session. `,
+    //       'Create a session using `session = orm.session()` and call ',
+    //       `\`session["${this.modelName}"].create\` instead.`
+    //     ].join('')
+    //   );
+    // }
     const props = {...userProps};
 
     const m2mRelations: any = {};
@@ -166,7 +166,8 @@ BaseModel.reducer = function(
       action.payload.items.map((m: SessionBoundModel) => modelClass.create(m));
       break;
     case `${modelName}/updateItem`:
-      modelClass.withId(action.payload.id).update(action.payload);
+      //modelClass.withId(action.payload.id).update(action.payload);
+      modelClass.upsert(action.payload);
       break;
     case `${modelName}/saveItem`:
       modelClass.upsert(action.payload);
