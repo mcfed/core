@@ -11,11 +11,7 @@ import {
 import createSagaMiddleware, {SagaMiddleware, Saga} from 'redux-saga';
 import {suppressWarnings} from 'core-decorators';
 
-import {
-  fetchingMiddleware,
-  moduleMiddleware,
-  sagaMiddleware
-} from '../middleware';
+import {fetchingMiddleware, moduleMiddleware} from '../middleware';
 import {orm} from '../model';
 import Model, {ORM, Session, OrmState, SessionBoundModel} from 'redux-orm';
 import {IndexedModelClasses} from 'redux-orm/ORM';
@@ -24,7 +20,6 @@ import {ModuleShape} from '../index.d';
 
 const {fetchingReducer} = fetchingMiddleware;
 const globalReducer = moduleMiddleware.default;
-const createSagaMonitor = sagaMiddleware.default;
 
 /**
  *  let store = new Store({reducers:{},middleares:[]})
@@ -42,14 +37,16 @@ export default class StoreManager<
     AnyAction
   > = [];
   private sagaMiddleware!: SagaMiddleware;
-
+  private makeRootReducer: any;
   protected store: Store;
 
   constructor(
     history: Location,
-    reducers: Array<Reducer>,
-    middlewares: Array<Middleware>
+    reducers: Array<Reducer> = [],
+    middlewares: Array<Middleware> = [],
+    makeRootReducer = combineReducers
   ) {
+    this.makeRootReducer = makeRootReducer;
     this.asyncReducers = this.initialReducer(reducers, history);
     this.store = this.createStoreWithMiddleware(middlewares, history)(
       this.makeRootReducer(this.asyncReducers)
@@ -69,18 +66,11 @@ export default class StoreManager<
     history: Location,
     middlweares: Array<Middleware>
   ): Array<Middleware> {
+    this.sagaMiddleware = createSagaMiddleware();
     return [
-      (store: any) => {
-        this.sagaMiddleware = createSagaMiddleware({
-          sagaMonitor: createSagaMonitor({
-            //@ts-ignore
-            rootReducer: this.asyncReducers,
-            storeDispatch: store.dispatch
-          })
-        });
-        return this.sagaMiddleware(store);
-      }
-    ].concat(middlweares || []);
+      this.sagaMiddleware
+      //@ts-ignore
+    ].concat(middlweares);
   }
 
   private initialReducer(reducers: Array<Reducer>, history: Location) {
@@ -89,11 +79,6 @@ export default class StoreManager<
       fetchingReducer,
       ...reducers
     };
-  }
-  private makeRootReducer<IndexedModelClasses>(
-    asyncReducers: ReducersMapObject<IndexedModelClasses, any>
-  ) {
-    return combineReducers(asyncReducers);
   }
   private injectSaga(saga: Saga): void {
     this.sagaMiddleware.run(saga);

@@ -73,4 +73,8 @@ describe('middleware run  type', () => {
       ).params
     ).toEqual(new Map());
   });
+
+  it('middleware undefined', () => {
+    expect(FetchingMiddleware.fetchingReducer(undefined, {type: undefined}));
+  });
 });

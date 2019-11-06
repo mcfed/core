@@ -35,6 +35,8 @@ export default function createPassport({
       logoutingProcess && logoutingProcess(dispatch, action.payload);
     } else if (FETCH_CONFIG == action.type) {
       globalProcess && globalProcess(dispatch, action.payload);
+    } else {
+      return next(action);
     }
     return next(action);
   };

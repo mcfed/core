@@ -9,6 +9,14 @@ describe('Name of the group', () => {
     expect(store.getStore()).toHaveProperty('subscribe');
     expect(store.getStore()).toHaveProperty('replaceReducer');
   });
+
+  it('create instance with middleware ', () => {
+    const store = new StoreManager(createHashHistory(), [], []);
+    expect(store.getStore()).toHaveProperty('dispatch');
+    expect(store.getStore()).toHaveProperty('getState');
+    expect(store.getStore()).toHaveProperty('subscribe');
+    expect(store.getStore()).toHaveProperty('replaceReducer');
+  });
   it('create store loadModule(user)', () => {
     const store = new StoreManager(createHashHistory());
     const module = require('../__module__');

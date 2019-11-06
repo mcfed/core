@@ -61,5 +61,7 @@ describe('middleware run  type', () => {
     );
     expect(mockPassport.globalProcess).toHaveBeenCalled();
     expect(mockNext).toHaveBeenCalled();
+    middleware.default(mockPassport)(mockStore)(mockNext)({type: undefined});
+    expect(mockNext).toHaveBeenCalled();
   });
 });

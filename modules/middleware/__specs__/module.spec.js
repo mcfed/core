@@ -1,6 +1,13 @@
 import * as middleware from '../redux-module.ts';
 
 describe('test action type', () => {
+  it('cancelTask', () => {
+    const expected = {
+      type: '@@MIDDLEWARE/CANCEL_TASK',
+      payload: {}
+    };
+    expect(middleware.cancelTask({}));
+  });
   it('upgradeDict', () => {
     const expected = {
       type: '@@MIDDLEWARE/UPGRADE_DICT',
