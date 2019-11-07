@@ -186,9 +186,9 @@ it('filter data', () => {
       .widgets.filter(w => w.x > 0)
       .toModelArray()
   );
-  //@ts-ignore
   console.log(
-    PageModel.filter(m => m.background.name == '无bug.gif').toModelArray()
+    //@ts-ignore
+    PageModel.filter(m => m.bg && m.bg.name == '无bug.gif').toModelArray()
   );
 });
 
@@ -203,13 +203,14 @@ it('update case', () => {
     height: 400
   });
   const widget2 = WidgetModel.create({
-    name: '图表2',
+    name: 'a表2',
     pageId: page.id,
     x: 100,
     y: 80,
     width: 300,
     height: 200
   });
-  widget.update({zIndex: 99});
-  widget.set('zIndex', 99);
+  console.log(page.widgets.orderBy('y', 'desc').toRefArray());
+  // widget.update({zIndex: 99});
+  // widget.set('zIndex', 99);
 });
