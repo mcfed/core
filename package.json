@@ -1,6 +1,6 @@
 {
   "name": "@mcf/core",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "@mcf for core",
   "main": "umd/index.js",
   "module": "cjs/index.js",
