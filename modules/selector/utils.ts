@@ -24,7 +24,7 @@ export function getDictList<T>(
   dicName: string
 ): Array<T> {
   // console.log(dictData)
-  return dictData[dicName] || [];
+  return (dictData && dictData[dicName]) || [];
 }
 
 /**

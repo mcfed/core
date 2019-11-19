@@ -19,7 +19,7 @@ import {Location} from 'history';
 import {ModuleShape} from '../index.d';
 
 const {fetchingReducer} = fetchingMiddleware;
-const globalReducer = moduleMiddleware.default;
+const {globalReducer} = moduleMiddleware;
 
 /**
  *  let store = new Store({reducers:{},middleares:[]})
