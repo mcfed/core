@@ -1,6 +1,6 @@
 {
   "name": "@mcf/core",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "@mcf for core",
   "main": "umd/index.js",
   "module": "cjs/index.js",
@@ -73,6 +73,6 @@
     "core-decorators": "^0.20.0",
     "redux": "^4.0.1",
     "redux-orm": "0.12.4",
-    "redux-saga": "^1.0.0"
+    "redux-saga": "1.0.2"
   }
 }
