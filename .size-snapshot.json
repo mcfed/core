@@ -10,13 +10,13 @@
     "gzipped": 7309
   },
   "cjs/index.js": {
-    "bundled": 43869,
-    "minified": 22743,
-    "gzipped": 6281
+    "bundled": 99918,
+    "minified": 34620,
+    "gzipped": 9245
   },
   "umd/index.js": {
-    "bundled": 49093,
-    "minified": 18939,
-    "gzipped": 5728
+    "bundled": 110170,
+    "minified": 30483,
+    "gzipped": 8664
   }
 }

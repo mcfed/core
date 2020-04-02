@@ -15,12 +15,18 @@ import {fetchingMiddleware, moduleMiddleware} from '../middleware';
 import {orm} from '../model';
 import Model, {ORM, Session, OrmState, SessionBoundModel} from 'redux-orm';
 import {IndexedModelClasses} from 'redux-orm/ORM';
-import {Location} from 'history';
-import {ModuleShape} from '../index.d';
+import {Location, LocationState} from 'history';
+import {reduxActionProxy} from '../proxy';
 
 const {fetchingReducer} = fetchingMiddleware;
 const {globalReducer} = moduleMiddleware;
 
+export interface ModuleShape {
+  default: Object;
+  model: Model;
+  reducer: Reducer;
+  saga: Saga;
+}
 /**
  *  let store = new Store({reducers:{},middleares:[]})
  *  store.getStore()
@@ -41,21 +47,22 @@ export default class StoreManager<
   protected store: Store;
 
   constructor(
-    history: Location,
+    history: LocationState,
     reducers: Array<Reducer> = [],
     middlewares: Array<Middleware> = [],
     makeRootReducer = combineReducers
   ) {
     this.makeRootReducer = makeRootReducer;
     this.asyncReducers = this.initialReducer(reducers, history);
-    this.store = this.createStoreWithMiddleware(middlewares, history)(
-      this.makeRootReducer(this.asyncReducers)
-    );
+    this.store = this.createStoreWithMiddleware(
+      middlewares,
+      history
+    )(this.makeRootReducer(this.asyncReducers));
   }
 
   private createStoreWithMiddleware(
     middlewares: Array<Middleware>,
-    history: Location
+    history: LocationState
   ) {
     return applyMiddleware.apply(
       this,
@@ -63,7 +70,7 @@ export default class StoreManager<
     )(createStore);
   }
   private initialMiddleware(
-    history: Location,
+    history: LocationState,
     middlweares: Array<Middleware>
   ): Array<Middleware> {
     this.sagaMiddleware = createSagaMiddleware();
@@ -73,7 +80,7 @@ export default class StoreManager<
     ].concat(middlweares);
   }
 
-  private initialReducer(reducers: Array<Reducer>, history: Location) {
+  private initialReducer(reducers: Array<Reducer>, history: LocationState) {
     return {
       appReducer: globalReducer,
       fetchingReducer,
@@ -116,7 +123,10 @@ export default class StoreManager<
     function createReducer(orm: ORM<IndexedModelClasses>) {
       var updater = defaultUpdater;
       return function(state: OrmState<IndexedModelClasses>, action: AnyAction) {
-        var session = orm.session({...orm.getEmptyState(), ...state});
+        var session = orm.session({
+          ...orm.getEmptyState(),
+          ...state
+        });
         updater(session, action);
         return session.state;
       };
@@ -145,6 +155,23 @@ export default class StoreManager<
     return loaded.default;
   }
 
+  public loadClassModule(loaded: any): Object {
+    //@ts-ignore
+    let moduleName = loaded.model.default.modelName;
+    /* istanbul ignore else */
+    if (this.registed.indexOf(moduleName) < 0) {
+      this.registed = this.registed.concat([moduleName]);
+      const reducer = reduxActionProxy(new loaded.reducer());
+      this.injectReducer(moduleName, reducer.getReducer());
+      this.store.dispatch({
+        type: '@@ModuleMiddleware/register',
+        payload: {name: moduleName}
+      });
+      this.injectModel(orm, loaded.model);
+    }
+    return loaded.default;
+  }
+
   @suppressWarnings
   public registerModule(modulePath: any): Promise<ModuleShape> {
     return this.importModule(modulePath);
@@ -154,6 +181,14 @@ export default class StoreManager<
     return new Promise((resolve: any, reject: any) => {
       modulePath.then((module: ModuleShape) => {
         resolve(this.loadModule(module));
+      });
+    });
+  }
+
+  public importClassModule(modulePath: any): Promise<any> {
+    return new Promise((resolve: any, reject: any) => {
+      modulePath.then((module: any) => {
+        resolve(this.loadClassModule(module));
       });
     });
   }

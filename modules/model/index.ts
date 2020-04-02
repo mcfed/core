@@ -1,7 +1,7 @@
 import {ORM, createSelector, ORMOpts, OrmState} from 'redux-orm';
 import BaseModel from './BaseModel';
 import Attr, {attr} from './Attr';
-import {IndexedModelClasses} from 'redux-orm/ORM';
+import {Model} from './Model';
 
 //@ts-ignore
 class ModelORM extends ORM {
@@ -23,4 +23,4 @@ class ModelORM extends ORM {
 //@ts-ignore
 const orm = new ModelORM();
 
-export {orm, ModelORM, BaseModel, Attr, attr};
+export {orm, ModelORM, BaseModel, Attr, attr, Model};

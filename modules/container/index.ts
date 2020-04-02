@@ -3,6 +3,7 @@ import {bindActionCreators as bindActions, AnyAction, Dispatch} from 'redux';
 import {connect} from 'react-redux';
 import * as Selector from '../selector';
 import {cancelTask} from '../middleware/redux-module';
+import {Factory} from '../InjectFactory';
 
 export function bindActionCreators(actions: AnyAction, dispatch: Dispatch) {
   let newActions = bindActions(actions, dispatch);
@@ -25,9 +26,27 @@ export function connectContainer(
   mapStateToProps: any,
   mapDispatchToProps: any = defaultMapDispatchToProps,
   mergeProps: any = defaultMergeProps,
-  options: any
+  options?: any
 ) {
   let args = arguments;
+  return (component: any) => {
+    return injectIntl(
+      connect(
+        mapStateToProps,
+        mapDispatchToProps,
+        mergeProps,
+        options
+      )(component)
+    );
+  };
+}
+
+export function containerFactory(
+  mapStateToProps: any,
+  mapDispatchToProps: any = defaultMapDispatchToProps,
+  mergeProps: any = defaultMergeProps,
+  options?: any
+) {
   return (component: any) => {
     return injectIntl(
       connect(
@@ -46,7 +65,7 @@ export const defaultMergeProps = (
   {dispatch, actions},
   ownProps: any
 ) => {
-  let {sagaActions, ...otherState} = state;
+  let {sagaActions, Action, ...otherState} = state;
   if (sagaActions) {
     actions = {
       ...bindActionCreators(sagaActions, dispatch),
@@ -54,6 +73,8 @@ export const defaultMergeProps = (
         dispatch(cancelTask(action.toString()));
       }
     };
+  } else if (Action) {
+    actions = Factory(Action);
   }
   const messages = defineMessages(state.messages);
   return Object.assign(
