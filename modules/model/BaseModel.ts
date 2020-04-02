@@ -7,9 +7,8 @@ import {
   SessionBoundModel
 } from 'redux-orm';
 //@ts-ignore
-import {attr} from './Attr.ts';
+import {attr} from './Attr';
 import {AnyAction} from 'redux';
-import {SessionState} from 'http2';
 
 function normalizeEntity(entity: any) {
   if (
@@ -148,7 +147,7 @@ BaseModel.reducer = function(
   action: AnyAction,
   modelClass: any,
   session: any
-): SessionState {
+): any {
   const modelName = modelClass.modelName;
   switch (action.type) {
     case `${modelName}/newItem`:

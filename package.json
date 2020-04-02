@@ -2,9 +2,9 @@
   "name": "@mcf/core",
   "version": "0.3.4",
   "description": "@mcf for core",
-  "main": "umd/index.js",
-  "module": "cjs/index.js",
-  "typings": "modules/index.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
     "test": "jest",
     "dev": "rollup -c --watch",
@@ -56,8 +56,6 @@
     "minami": "^1.2.3",
     "prettier": "^1.14.3",
     "pretty-quick": "^1.4.1",
-    "react-intl": "^3.4.0",
-    "react-redux": "^7.1.1",
     "rollup": "^0.66.6",
     "rollup-plugin-extensions": "^0.1.0",
     "rollup-plugin-local-resolve": "^1.0.7",
@@ -71,8 +69,11 @@
   },
   "dependencies": {
     "core-decorators": "^0.20.0",
+    "react-intl": "^3.4.0",
+    "react-redux": "^7.1.1",
     "redux": "^4.0.1",
     "redux-orm": "0.12.4",
-    "redux-saga": "1.0.2"
+    "redux-saga": "0.16.2",
+    "reflect-metadata": "^0.1.13"
   }
 }

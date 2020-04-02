@@ -34,41 +34,31 @@ export const reducerSelector = (state: any, namespace: string) =>
   state[namespace];
 
 export function spins(state: any, type: string) {
-  return createSelector(
-    [spinsSelector],
-    (spins: any) => {
-      return spins.get(type);
-    }
-  )(state);
+  return createSelector([spinsSelector], (spins: any) => {
+    return spins.get(type);
+  })(state);
 }
 
 export function querys(state: any, type: string) {
-  return createSelector(
-    [querysSelector],
-    (querys: any) => {
-      return querys.get(type) || {};
-    }
-  )(state);
+  return createSelector([querysSelector], (querys: any) => {
+    return querys.get(type) || {};
+  })(state);
 }
 
 export function dicts(state: any, type: string, value: any) {
   const args = arguments;
-  return createSelector(
-    [dictsSelector],
-    (dicts: any) => {
-      if (args.length > 2) {
-        return getDictLabel(dicts, type, value);
-      } else if (args.length == 2) {
-        return getDictList(dicts, type);
-      } else {
-        return dicts;
-      }
+  return createSelector([dictsSelector], (dicts: any) => {
+    if (args.length > 2) {
+      return getDictLabel(dicts, type, value);
+    } else if (args.length == 2) {
+      return getDictList(dicts, type);
+    } else {
+      return dicts;
     }
-  )(state);
+  })(state);
 }
 
 export function containerSelector(namespace: string, props: object) {
-  //@ts-ignore
   let id = '';
   //@ts-ignore
   if (props && props.match && props.match.params) {

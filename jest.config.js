@@ -19,7 +19,7 @@ module.exports = {
     '<rootDir>/src/shared/libs/url/'
   ],
   testURL: 'http://localhost/',
-  testRegex: '__specs__/.*\\.js?$', //要测试的文件目录及后缀
+  testRegex: '__specs__/.*\\.ts?$', //要测试的文件目录及后缀
   testPathIgnorePatterns: [
     //忽略该路径的文件测试
     '<rootDir>/node_modules/(?!lodash-es)',
