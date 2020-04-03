@@ -8,7 +8,7 @@ import {
   AnyAction,
   Store
 } from 'redux';
-import createSagaMiddleware, {SagaMiddleware, Saga} from 'redux-saga';
+import createSagaMiddleware, {SagaMiddleware} from 'redux-saga';
 import {suppressWarnings} from 'core-decorators';
 
 import {fetchingMiddleware, moduleMiddleware} from '../middleware';
@@ -25,7 +25,7 @@ export interface ModuleShape {
   default: Object;
   model: Model;
   reducer: Reducer;
-  saga: Saga;
+  saga: any;
 }
 /**
  *  let store = new Store({reducers:{},middleares:[]})
@@ -42,7 +42,7 @@ export default class StoreManager<
     IndexedModelClasses<I>,
     AnyAction
   > = [];
-  private sagaMiddleware!: SagaMiddleware;
+  private sagaMiddleware!: SagaMiddleware<any>;
   private makeRootReducer: any;
   protected store: Store;
 
@@ -87,7 +87,7 @@ export default class StoreManager<
       ...reducers
     };
   }
-  private injectSaga(saga: Saga): void {
+  private injectSaga(saga: any): void {
     this.sagaMiddleware.run(saga);
   }
   private injectReducer(key: String, reducer: Reducer): void {

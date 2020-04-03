@@ -4,11 +4,12 @@ import {
   Session,
   CreateProps,
   ModelFieldMap,
-  SessionBoundModel
+  SessionBoundModel,
+  ModelType
 } from 'redux-orm';
-//@ts-ignore
 import {attr} from './Attr';
-import {AnyAction} from 'redux';
+import {OrmSession} from 'redux-orm/Session';
+import {ModelFields} from 'redux-orm/Model';
 
 function normalizeEntity(entity: any) {
   if (
@@ -24,7 +25,7 @@ function normalizeEntity(entity: any) {
 
 export default class BaseModel extends Model {
   private _fields: ModelFieldMap = {};
-  private static _session?: any;
+  private static _session?: Session<any>;
   private static virtualFields?: any;
 
   constructor(props: ModelFieldMap) {
@@ -144,9 +145,9 @@ export default class BaseModel extends Model {
 }
 
 BaseModel.reducer = function(
-  action: AnyAction,
-  modelClass: any,
-  session: any
+  action: any,
+  modelClass: ModelType<any>,
+  session: OrmSession<any>
 ): any {
   const modelName = modelClass.modelName;
   switch (action.type) {
@@ -172,6 +173,7 @@ BaseModel.reducer = function(
       modelClass.upsert(action.payload);
       break;
     case `${modelName}/deleteItem`:
+      //@ts-ignore
       const model = modelClass.withId(action.payload);
       model.delete();
       break;

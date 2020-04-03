@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import {Store} from 'redux';
+import {Store, Reducer} from 'redux';
 
 export type Constructor<T = any> = new (...args: any[]) => T;
 

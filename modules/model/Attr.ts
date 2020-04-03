@@ -1,12 +1,12 @@
-import {Attribute} from 'redux-orm';
+import {Attribute, CreateProps} from 'redux-orm';
 
 export default class Attr extends Attribute {
   private fieldName?: string;
-  private opts?: AttributeOpts;
+  private opts?: CreateProps<any>;
   private getDefault?: Function;
   private getMethod?: Function;
   private setMethod?: Function;
-  constructor(opts?: AttributeOpts) {
+  constructor(opts?: CreateProps<any>) {
     super(opts);
 
     if (opts && typeof opts === 'string') {
@@ -34,10 +34,13 @@ export default class Attr extends Attribute {
       get() {
         return getMethod
           ? //@ts-ignore
-            //@ts-ignore
-            getMethod.call(this, this._fields[mapperFieldName], this._fields)
+            getMethod.call(
+              this,
+              //@ts-ignore
+              this._fields[mapperFieldName],
+              this._fields
+            )
           : //@ts-ignore
-            //@ts-ignore
             this._fields[mapperFieldName];
       },
       set(value: any) {
@@ -52,7 +55,7 @@ export default class Attr extends Attribute {
   }
 }
 
-function attr(opt: AttributeOpts) {
+function attr(opt: any) {
   return new Attr(opt);
 }
 
