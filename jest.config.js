@@ -28,7 +28,7 @@ module.exports = {
     '<rootDir>/dist',
     '<rootDir>/scripts/',
     '<rootDir>/api/',
-    '<rootDir>/modules/store/__module__',
+    '<rootDir>/src/*/__mock__',
     '<rootDir>/test/setup.js',
     '__mocks__'
   ],

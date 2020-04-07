@@ -8,7 +8,7 @@
   "scripts": {
     "test": "jest",
     "dev": "rollup -c --watch",
-    "build": "rollup -c",
+    "build": "rm -rf dist && npx tsc -d --outDir dist",
     "jsdoc": "node_modules/.bin/jsdoc --configure .jsdoc.json --verbose"
   },
   "keywords": [
@@ -32,12 +32,15 @@
     "@commitlint/config-conventional": "^8.1.0",
     "@types/history": "^4.7.3",
     "@types/jest": "^24.0.15",
+    "@types/node": "^13.11.0",
     "@types/react-redux": "^7.1.5",
+    "@types/redux-mock-store": "^1.0.2",
     "@types/redux-orm": "^0.13.5",
     "husky": "^2.3.0",
     "lint-staged": "8.0.0",
     "prettier": "^1.14.3",
     "pretty-quick": "^1.4.1",
+    "redux-mock-store": "^1.5.4",
     "ts-jest": "^24.0.2",
     "tslib": "^1.10.0",
     "typescript": "^3.5.3"
@@ -46,8 +49,6 @@
     "core-decorators": "^0.20.0",
     "history": "^4.10.1",
     "jest": "^25.2.6",
-    "react-intl": "^4.3.1",
-    "react-redux": "^7.1.1",
     "redux": "^4.0.1",
     "redux-orm": "0.12.4",
     "redux-saga": "0.16.2",
