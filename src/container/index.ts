@@ -73,8 +73,8 @@ export const defaultMergeProps = (
         dispatch(cancelTask(action.toString()));
       }
     };
-  } else if (Action) {
-    actions = Factory(Action);
+  } else if (state.actions) {
+    actions = state.actions;
   }
   // const messages = defineMessages(state.messages);
   return Object.assign(
