@@ -43,20 +43,21 @@ class TestModel extends BaseModel {
   }
   get getServerIp() {
     //@ts-ignore
-    return 'http://' + this._fields.serverIp;
+    return 'http://' + this.serverIp;
   }
   get getServerAddress() {
+    console.log(this.serverIp, this.serverPort);
     //@ts-ignore
-    return [this._fields.serverIp, this._fields.serverPort].join(':');
+    return [this.serverIp, this.serverPort].join(':');
   }
 
   get getServerStatusStr() {
     //@ts-ignore
-    return this._fields.serverStatus === '1' ? '启用' : '禁用';
+    return this.serverStatus === '1' ? '启用' : '禁用';
   }
   getServerStatusIp() {
     //@ts-ignore
-    return this._fields.serverStatus + this._fields.serverIp;
+    return this.serverStatus + this.serverIp;
   }
 }
 

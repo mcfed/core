@@ -17,16 +17,16 @@ describe('ORM initial', () => {
   const testModel = new ProxyModel(TestModel, Test, TestModelClass);
   // console.log(TestModel, Test, testModel);
   it('testModel serverStatusStr', done => {
-    expect(testModel.serverStatusStr).toBe('1');
+    expect(testModel.serverStatusStr).toBe('启用');
     done();
   });
 
-  it.skip('testModel  serverName default {unname}', done => {
+  it('testModel  serverName default {unname}', done => {
     expect(testModel.serverName).toBe('unname');
     done();
   });
 
-  it.skip('testModel serverIp has value ', done => {
+  it('testModel serverIp has value ', done => {
     expect(testModel.serverIp).toBe('http://127.0.0.1');
     done();
   });
@@ -36,15 +36,13 @@ describe('ORM initial', () => {
     done();
   });
 
-  it.skip('testModel serverAddress = {serverIp}:{serverPort}', done => {
+  it('testModel serverAddress = {serverIp}:{serverPort}', done => {
     expect(testModel.serverAddress).toBe('127.0.0.1:8080');
     done();
   });
-  it.skip('testModel serverName set', done => {
-    testModel.serverName = 'abc';
-    let t1 = Test.all().toModelArray()[0];
-    // console.log(t1['serverAddress'])
-    expect(t1.serverAddress).toBe('127.0.0.1:8080');
+  it('testModel serverName set', done => {
+    testModel.serverPort = '7099';
+    expect(testModel.serverAddress).toBe('127.0.0.1:7099');
     done();
   });
 });
