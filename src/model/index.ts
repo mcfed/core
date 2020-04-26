@@ -1,7 +1,5 @@
 import {ORM, createSelector, ORMOpts, OrmState} from 'redux-orm';
-import BaseModel from './BaseModel';
-import Attr, {attr} from './Attr';
-import {Model, fieldSetAttr, fieldSetPk, fieldSetFk} from './Model';
+import {ProxyModel, fk, pk, attr, BaseModel} from './decoator';
 
 //@ts-ignore
 class ModelORM extends ORM {
@@ -23,14 +21,4 @@ class ModelORM extends ORM {
 //@ts-ignore
 const orm = new ModelORM();
 
-export {
-  orm,
-  ModelORM,
-  BaseModel,
-  Attr,
-  attr,
-  Model,
-  fieldSetAttr,
-  fieldSetPk,
-  fieldSetFk
-};
+export {orm, ModelORM, ProxyModel, pk, fk, attr, BaseModel};

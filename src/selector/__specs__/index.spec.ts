@@ -1,8 +1,7 @@
 import * as Selector from '../index';
-import * as Model from '../../model';
+import {attr, BaseModel, orm, pk} from '../../model';
 import {createSelector} from 'reselect';
 
-const {orm, BaseModel, attr} = Model;
 let fetchingMap = new Map();
 fetchingMap.set('f', true);
 
@@ -14,11 +13,9 @@ querysMap.set('q', {
 
 class TestModel extends BaseModel {
   static modelName = 'TestModel';
-  static fields = {};
+  @pk()
+  id!: string;
 }
-Object.assign(TestModel.fields, BaseModel.fields, {
-  id: attr({})
-});
 
 orm.register(TestModel);
 
