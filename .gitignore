@@ -12,6 +12,7 @@
 .vscode
 
 # production
+/dist
 /build
 /.vagrant
 # misc
