@@ -1,5 +1,5 @@
 import {ProxyModel} from './Model';
-import {FkSet, PkSet, AttrSet} from './fields';
+import {fk, pk, attr} from './fields';
 import {BaseModel} from './BaseModel';
 
-export {ProxyModel, FkSet, PkSet, AttrSet, BaseModel};
+export {ProxyModel, fk, pk, attr, BaseModel};

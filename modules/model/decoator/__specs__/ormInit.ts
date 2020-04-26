@@ -7,32 +7,32 @@
 // } from '../test';
 // const {orm, BaseModel} = ModuleModel;
 import {AnyAction} from 'redux';
-import {ProxyModel, FkSet, PkSet, AttrSet, BaseModel} from '../index';
+import {ProxyModel, pk, fk, attr, BaseModel} from '../index';
 import {orm} from '../../index';
 
 class TestModel extends BaseModel {
   static modelName = 'TestModel';
-  @PkSet()
+  @pk()
   id!: String;
-  @AttrSet()
+  @attr()
   serverName!: String;
 
-  @AttrSet()
+  @attr()
   serverStatus!: String;
 
-  @AttrSet()
+  @attr()
   serverIp!: String;
-  @AttrSet()
+  @attr()
   serverPort!: String;
 
   serverAddress!: String;
 
-  @AttrSet('serverPort')
+  @attr('serverPort')
   port!: Number;
 
   prop1!: String;
 
-  @AttrSet({fieldName: 'serverStatus'})
+  @attr({fieldName: 'serverStatus'})
   serverStatusStr!: String;
 
   get getserverName() {
@@ -89,20 +89,9 @@ class ReducerChangeModel extends BaseModel {
   props2!: String;
   Props1!: String;
 }
-//@ts-ignore
-// let TestModel = new ProxyModel(TestModelClass);
-// //@ts-ignore
-// let TestPropModel = new ProxyModel(TestPropModelClass);
-// //@ts-ignore
-// let ReducerModel = new ProxyModel(ReducerModelClass);
-// //@ts-ignore
-// let ReducerChangeModel = new ProxyModel(ReducerChangeModelClass);
 
 export {TestModel};
 
-// console.log(TestModel, TestPropModel, ReducerModel, ReducerChangeModel);
-// console.log(TestModel);
-// orm.register(TestModel, TestPropModel, ReducerModel, ReducerChangeModel);
 orm.register(TestModel, TestPropModel, ReducerModel, ReducerChangeModel);
 let session = orm.session({
   TestModel: {

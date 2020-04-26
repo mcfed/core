@@ -57,4 +57,12 @@ const FkSet = (setting: fkType) => (target: any, propertyKey: string) => {
   target.constructor.fields[propertyKey] = fk(setting);
 };
 
-export {FkSet, PkSet, AttrSet, utilIsAttrWithFkExist};
+export {
+  FkSet as fk,
+  PkSet as pk,
+  AttrSet as attr,
+  FkSet,
+  PkSet,
+  AttrSet,
+  utilIsAttrWithFkExist
+};
