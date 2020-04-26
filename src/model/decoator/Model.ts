@@ -52,26 +52,3 @@ export function ProxyModel(
     }
   });
 }
-
-// const Model = () => (target: any) => {
-//   target.modelName = target.name;
-
-//   const dataKeys = Reflect.getMetadataKeys(target);
-
-//   const propertyList = Object.getOwnPropertyNames(target.prototype) || [];
-
-//   dataKeys.map(it => {
-//     const fieldsSettings = Reflect.getMetadata(it, target);
-//     fieldsSettings.forEach((itemSetting: any) => {
-//       const {method, ...others} = itemSetting;
-//       if (utilIsAttrWithFkExist(method, fieldsSettings)) {
-//         //@ts-ignore
-//         target.fields[it] = method(others);
-//       } else if (method === pk) {
-//         target.options.idAttribute = it;
-//       }
-//     });
-//   });
-// };
-
-// export default Model;

@@ -1,11 +1,3 @@
-//@ts-ignore
-// import {
-//   Model,
-//   fieldSetAttr as AttrSet,
-//   fieldSetPk as PkSet,
-//   fieldSetFk
-// } from '../test';
-// const {orm, BaseModel} = ModuleModel;
 import {AnyAction} from 'redux';
 import {ProxyModel, pk, fk, attr, BaseModel} from '../index';
 import {orm} from '../../index';

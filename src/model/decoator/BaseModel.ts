@@ -1,14 +1,84 @@
-import {Model, SessionBoundModel} from 'redux-orm';
+import {Model, ModelFieldMap, ManyToMany, SessionBoundModel} from 'redux-orm';
 import {AnyAction} from 'redux';
 
+function normalizeEntity(entity: any) {
+  if (
+    entity !== null &&
+    typeof entity !== 'undefined' &&
+    typeof entity.getId === 'function'
+  ) {
+    return entity.getId();
+  }
+
+  return entity;
+}
+
 class BaseModel extends Model {
+  private static virtualFields?: any;
   static reducers = {};
 
   //TODO 需要实现 parse ,不保存数据只做对象转换
-  static parse(payload: any) {
-    return {
-      _fields: {}
-    };
+  static parse(userProps: ModelFieldMap): SessionBoundModel {
+    // if (typeof this._session === 'undefined') {
+    //   throw new Error(
+    //     [
+    //       `Tried to create a ${this.modelName} model instance without a session. `,
+    //       'Create a session using `session = orm.session()` and call ',
+    //       `\`session["${this.modelName}"].create\` instead.`
+    //     ].join('')
+    //   );
+    // }
+    const props = {...userProps};
+
+    const m2mRelations: any = {};
+
+    const declaredFieldNames = Object.keys(this.fields);
+    const declaredVirtualFieldNames = Object.keys(this.virtualFields);
+
+    declaredFieldNames.forEach(key => {
+      const field = this.fields[key];
+      const valuePassed = userProps.hasOwnProperty(key);
+      if (!(field instanceof ManyToMany)) {
+        if (valuePassed) {
+          const value = userProps[key];
+          props[key] = normalizeEntity(value);
+          //@ts-ignore
+        } else if (field.getDefault) {
+          //@ts-ignore
+          props[key] = field.getDefault();
+        }
+      } else if (valuePassed) {
+        // If a value is supplied for a ManyToMany field,
+        // discard them from props and save for later processing.
+        m2mRelations[key] = userProps[key];
+        delete props[key];
+      }
+    });
+
+    // add backward many-many if required
+    declaredVirtualFieldNames.forEach(key => {
+      if (!m2mRelations.hasOwnProperty(key)) {
+        const field = this.virtualFields[key];
+        if (userProps.hasOwnProperty(key) && field instanceof ManyToMany) {
+          // If a value is supplied for a ManyToMany field,
+          // discard them from props and save for later processing.
+          m2mRelations[key] = userProps[key];
+          delete props[key];
+        }
+      }
+    });
+
+    // const newEntry = this.session.applyUpdate({
+    //   action: CREATE,
+    //   table: this.modelName,
+    //   payload: props
+    // });
+
+    const ThisModel = this;
+    const instance = new ThisModel(props);
+    // instance._refreshMany2Many(m2mRelations); // eslint-disable-line no-underscore-dangle
+    // this.instance =instance
+    return instance;
   }
 }
 
