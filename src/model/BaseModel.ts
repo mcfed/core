@@ -4,12 +4,11 @@ import {
   Session,
   CreateProps,
   ModelFieldMap,
-  SessionBoundModel,
   ModelType
 } from 'redux-orm';
 import {attr} from './Attr';
 import {OrmSession} from 'redux-orm/Session';
-import {ModelFields} from 'redux-orm/Model';
+import {SessionBoundModel} from '.';
 
 function normalizeEntity(entity: any) {
   if (

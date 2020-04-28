@@ -1,5 +1,6 @@
 import {ORM, createSelector, ORMOpts, OrmState} from 'redux-orm';
 import {ProxyModel, fk, pk, attr, BaseModel} from './decoator';
+export {SessionBoundModel} from 'redux-orm';
 
 //@ts-ignore
 class ModelORM extends ORM {
