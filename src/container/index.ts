@@ -76,7 +76,6 @@ export const defaultMergeProps = (
   } else if (state.actions) {
     actions = state.actions;
   }
-  // const messages = defineMessages(state.messages);
   return Object.assign(
     {},
     ownProps,
@@ -94,11 +93,11 @@ export const defaultMergeProps = (
       },
       locale: function(type: string, vars: any) {
         if (ownProps.intl) {
-          // if (messages[type]) {
-          //   return ownProps.intl.formatMessage(messages[type], vars);
-          // } else {
-          //   return ownProps.intl.formatMessage({id: type}, vars);
-          // }
+          if (otherState.messages[type]) {
+            return ownProps.intl.formatMessage(otherState.messages[type], vars);
+          } else {
+            return ownProps.intl.formatMessage({id: type}, vars);
+          }
         }
         return '';
       }
