@@ -1,6 +1,6 @@
 {
   "name": "@mcf/core",
-  "version": "0.4.0-rc2",
+  "version": "0.4.0-rc3",
   "description": "@mcf for core",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -37,6 +37,7 @@
     "@types/redux-mock-store": "^1.0.2",
     "@types/redux-orm": "^0.13.6",
     "husky": "^2.7.0",
+    "jest": "^25.3.0",
     "lint-staged": "8.0.0",
     "prettier": "^1.19.1",
     "pretty-quick": "^1.11.1",
@@ -48,7 +49,6 @@
   "dependencies": {
     "core-decorators": "^0.20.0",
     "history": "^4.10.1",
-    "jest": "^25.3.0",
     "redux": "^4.0.5",
     "redux-orm": "0.12.4",
     "redux-saga": "0.16.2",
