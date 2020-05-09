@@ -7,28 +7,25 @@ import {
   reducerPageSelector
 } from './reducerSelector';
 
-export const fetchingStructured = (state: any) => state.fetchingReducer;
-export const appStructured = (state: any) => state.appReducer;
+export const fetchingSelector = (state: any) => state.fetchingReducer;
+export const appSelector = (state: any) => state.appReducer;
 
 export const spinsSelector = createSelector(
-  [fetchingStructured],
+  [fetchingSelector],
   (selector: any) => {
     return selector.fetching;
   }
 );
 export const querysSelector = createSelector(
-  [fetchingStructured],
+  [fetchingSelector],
   (selector: any) => {
     return selector.params;
   }
 );
 
-export const dictsSelector = createSelector(
-  [appStructured],
-  (selector: any) => {
-    return selector.dicts;
-  }
-);
+export const dictsSelector = createSelector([appSelector], (selector: any) => {
+  return selector.dicts;
+});
 
 export const reducerSelector = (state: any, namespace: string) =>
   state[namespace];
@@ -65,8 +62,8 @@ export function containerSelector(namespace: string, props: object) {
     id = props.match.params;
   }
   return createStructuredSelector({
-    appReducer: appStructured,
-    fetchingReducer: fetchingStructured,
+    appReducer: appSelector,
+    fetchingReducer: fetchingSelector,
     reducer: (state: any) => reducerSelector(state, namespace),
     item: (state: any) => reducerItemSelector(state, namespace, id),
     items: (state: any) => reducerListSelector(state, namespace)

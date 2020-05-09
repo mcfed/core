@@ -74,10 +74,7 @@ export default class StoreManager<
     middlweares: Array<Middleware>
   ): Array<Middleware> {
     this.sagaMiddleware = createSagaMiddleware();
-    return [
-      this.sagaMiddleware
-      //@ts-ignore
-    ].concat(middlweares);
+    return middlweares.concat([this.sagaMiddleware]);
   }
 
   private initialReducer(reducers: Array<Reducer>, history: LocationState) {
@@ -98,7 +95,6 @@ export default class StoreManager<
   }
 
   private injectModel(orm: ORM<IndexedModelClasses>, model: Model): void {
-    //@ts-ignore
     Object.values(model)
       .filter((m: SessionBoundModel) => typeof m === 'function')
       .map((m: SessionBoundModel) => {
@@ -155,12 +151,13 @@ export default class StoreManager<
     return loaded.default;
   }
 
-  public loadClassModule(loaded: any): Object {
+  public loadRouterModule(loaded: any): Object {
     //@ts-ignore
     let moduleName = loaded.model.default.modelName;
     /* istanbul ignore else */
     if (this.registed.indexOf(moduleName) < 0) {
       this.registed = this.registed.concat([moduleName]);
+      //@ts-ignore
       const reducer = reduxActionProxy(new loaded.reducer());
       this.injectReducer(moduleName, reducer.getReducer());
       this.store.dispatch({
@@ -185,10 +182,10 @@ export default class StoreManager<
     });
   }
 
-  public importClassModule(modulePath: any): Promise<any> {
+  public importRouterModule(modulePath: any): Promise<any> {
     return new Promise((resolve: any, reject: any) => {
       modulePath.then((module: any) => {
-        resolve(this.loadClassModule(module));
+        resolve(this.loadRouterModule(module));
       });
     });
   }

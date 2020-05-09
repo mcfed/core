@@ -38,16 +38,14 @@ export function reducerListSelector(
     orm,
     //@ts-ignore
     (session: Session<IndexedModelClasses>) => {
-      return (
-        session[modelName]
-          .all()
-          // .filter(
-          //   (model: SessionBoundModel) =>
-          //     !(JSON.stringify(model) === '{}' || model.id === '')
-          // )
-          .filter(filterCB)
-          .toModelArray()
-      );
+      return session[modelName]
+        .all()
+        .filter(
+          (model: SessionBoundModel) =>
+            !(JSON.stringify(model) === '{}' || model.id === '')
+        )
+        .filter(filterCB)
+        .toModelArray();
     }
   )(ormSelector(state));
 }
