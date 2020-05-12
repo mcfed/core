@@ -9,13 +9,14 @@ function getProperty<T, K extends keyof T>(o: T, name: K): T[K] {
 
 export function useActionProxy<T extends object>(
   target: T,
-  dispatch: Dispatch
+  dispatch: Dispatch,
+  namespace: string = target.constructor.name
 ): T {
   return new Proxy(target, {
     get: function(newTarget: T, prop: keyof T) {
       return function(payload: Object) {
         dispatch({
-          type: [target.constructor.name, prop].join('/'),
+          type: [namespace, prop].join('/'),
           payload,
           meta: {
             method: prop

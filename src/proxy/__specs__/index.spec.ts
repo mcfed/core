@@ -28,7 +28,11 @@ describe('useActionProxy', () => {
     const mockStore = configureStore(middleware);
     const initialState = {a: 1, b: 2};
     const store = mockStore(initialState);
-    const reducerAction = useActionProxy(new CarReducer(), store.dispatch);
+    const reducerAction = useActionProxy(
+      new CarReducer(),
+      store.dispatch,
+      'CarReducer'
+    );
     reducerAction.inital({c: 3});
 
     expect(store.getActions()[0]).toEqual({

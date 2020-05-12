@@ -22,14 +22,15 @@ export const Factory = <T>(target: Constructor<T>): T => {
 
 export const ActionFactory = <T>(
   target: Constructor<T>,
-  dispatch: Dispatch
+  dispatch: Dispatch,
+  namespace: string
 ): T => {
   const providers = Reflect.getMetadata('design:paramtypes', target) || []; // [OtherService]
   // console.lo,target)
   const args = providers.map((provider: Constructor) => {
     let instance = null;
     if (provider.prototype.hasOwnProperty('getReducer')) {
-      instance = useActionProxy(new provider(), dispatch);
+      instance = useActionProxy(new provider(), dispatch, namespace);
     } else {
       instance = new provider();
     }
