@@ -28,7 +28,7 @@ describe('useActionProxy', () => {
     const mockStore = configureStore(middleware);
     const initialState = {a: 1, b: 2};
     const store = mockStore(initialState);
-    const reducerAction = useActionProxy(new CarReducer(), store);
+    const reducerAction = useActionProxy(new CarReducer(), store.dispatch);
     reducerAction.inital({c: 3});
 
     expect(store.getActions()[0]).toEqual({
@@ -46,7 +46,7 @@ describe('useActionProxy', () => {
       initialState,
       applyMiddleware()
     );
-    const reducerAction = useActionProxy(new CarReducer(), store);
+    const reducerAction = useActionProxy(new CarReducer(), store.dispatch);
     reducerAction.inital({c: 1});
     expect(store.getState()).toEqual({...initialState, c: 1});
   });
@@ -59,7 +59,7 @@ describe('createActionProxy', () => {
     const initialState = {a: 1, b: 2};
     const store = mockStore(initialState);
 
-    const Actions = createActionProxy(CarSaga, store);
+    const Actions = createActionProxy(CarSaga, store.dispatch);
     const carActions = new Actions(CarReducer, new Api());
     carActions.run();
     expect(store.getActions()[0]).toEqual({

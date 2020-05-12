@@ -1,5 +1,6 @@
 import 'reflect-metadata';
-import {Store} from 'redux';
+import {Store, Dispatch} from 'redux';
+import {useActionProxy} from '../proxy';
 
 export type Constructor<T = any> = new (...args: any[]) => T;
 
@@ -19,16 +20,19 @@ export const Factory = <T>(target: Constructor<T>): T => {
   return new target(...args);
 };
 
-export const ActionFactory = <T>(target: Constructor<T>, store: Store): T => {
+export const ActionFactory = <T>(
+  target: Constructor<T>,
+  dispatch: Dispatch
+): T => {
   const providers = Reflect.getMetadata('design:paramtypes', target) || []; // [OtherService]
   // console.lo,target)
   const args = providers.map((provider: Constructor) => {
     let instance = null;
-    // if (Object.getPrototypeOf(provider) === BaseReducer) {
-    //   instance = useActionProxy(new provider(), store);
-    // } else {
-    instance = new provider();
-    // }
+    if (provider.prototype.hasOwnProperty('getReducer')) {
+      instance = useActionProxy(new provider(), dispatch);
+    } else {
+      instance = new provider();
+    }
     return instance;
   });
   return new target(...args);

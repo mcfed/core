@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import {Store, Reducer} from 'redux';
+import {Store, Reducer, Dispatch} from 'redux';
 
 export type Constructor<T = any> = new (...args: any[]) => T;
 
@@ -7,11 +7,14 @@ function getProperty<T, K extends keyof T>(o: T, name: K): T[K] {
   return o[name]; // o[name] is of type T[K]
 }
 
-export function useActionProxy<T extends object>(target: T, store: Store): T {
+export function useActionProxy<T extends object>(
+  target: T,
+  dispatch: Dispatch
+): T {
   return new Proxy(target, {
     get: function(newTarget: T, prop: keyof T) {
       return function(payload: Object) {
-        store.dispatch({
+        dispatch({
           type: [target.constructor.name, prop].join('/'),
           payload,
           meta: {
@@ -54,12 +57,12 @@ export function reduxActionProxy<T extends object>(target: T): T {
 
 export function createActionProxy<T extends object>(
   target: Constructor<T>,
-  store: Store
+  dispatch: Dispatch
 ): Constructor<T> {
   return new Proxy<any>(target, {
     construct(target, args: any) {
       const [oneArg, twoArg] = args;
-      return new target(useActionProxy(oneArg, store), twoArg);
+      return new target(useActionProxy(oneArg, dispatch), twoArg);
     }
   });
 }
