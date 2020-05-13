@@ -17,6 +17,29 @@ class BaseModel extends Model {
   private static virtualFields?: any;
   static reducers = {};
 
+  _initFields(props: any) {
+    const propsObj = Object(props);
+    //@ts-ignore
+    this._fields = {...propsObj};
+
+    Object.keys(propsObj).forEach(fieldName => {
+      // In this case, we got a prop that wasn't defined as a field.
+      // Assuming it's an arbitrary data field, making an instance-specific
+      // descriptor for it.
+      // Using the in operator as the property could be defined anywhere
+      // on the prototype chain.
+      if (fieldName in this) {
+        Object.defineProperty(this, fieldName, {
+          //@ts-ignore
+          get: () => this._fields[fieldName],
+          set: value => this.set(fieldName, value),
+          configurable: true,
+          enumerable: true
+        });
+      }
+    });
+  }
+
   //TODO 需要实现 parse ,不保存数据只做对象转换
   static parse(userProps: ModelFieldMap): SessionBoundModel {
     // if (typeof this._session === 'undefined') {

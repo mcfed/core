@@ -45,6 +45,16 @@ describe('ORM initial', () => {
     expect(testModel.serverAddress).toBe('127.0.0.1:7099');
     done();
   });
+
+  describe('origin model can be use', () => {
+    it('field use', () => {
+      expect(TestModel.id).toEqual('abc');
+      expect(TestModel.serverStatus).toEqual('1');
+      expect(TestModel.serverIp).toEqual('127.0.0.1');
+      expect(TestModel.serverPort).toEqual('7099');
+      expect(TestModel.ip).toEqual(undefined);
+    });
+  });
 });
 
 describe('reducer test', () => {
