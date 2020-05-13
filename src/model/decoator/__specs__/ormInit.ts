@@ -38,7 +38,6 @@ class TestModel extends BaseModel {
     return 'http://' + this.serverIp;
   }
   get getServerAddress() {
-    console.log(this.serverIp, this.serverPort);
     //@ts-ignore
     return [this.serverIp, this.serverPort].join(':');
   }
