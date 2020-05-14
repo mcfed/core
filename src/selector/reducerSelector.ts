@@ -16,6 +16,7 @@ export function reducerItemSelector(
   modelName: string,
   key: string
 ) {
+  //@ts-ignore
   return createSelector(orm, (session: any) => {
     return session[modelName].idExists(key)
       ? session[modelName].withId(key)
@@ -34,7 +35,9 @@ export function reducerListSelector(
   modelName: string,
   filterCB: Function = defaultFilterCallback
 ): Array<SessionBoundModel> {
+  //@ts-ignore
   return createSelector(
+    //@ts-ignore
     orm,
     //@ts-ignore
     (session: Session<IndexedModelClasses>) => {
@@ -60,7 +63,9 @@ export function reducerModel(
   state: any,
   modelName: string
 ): Array<SessionBoundModel> {
+  //@ts-ignore
   return createSelector(
+    //@ts-ignore
     orm,
     //@ts-ignore
     (session: Session<IndexedModelClasses>) => {
@@ -81,7 +86,9 @@ export function reducerPageSelector(
   props?: Object,
   filterCB: Function = defaultFilterCallback
 ): Array<SessionBoundModel> {
+  //@ts-ignore
   return createSelector(
+    //@ts-ignore
     orm,
     //@ts-ignore
     (session: Session<IndexedModelClasses>) => {

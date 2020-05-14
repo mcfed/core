@@ -1,6 +1,5 @@
 import {AnyAction} from 'redux';
-import {ProxyModel, pk, fk, attr, BaseModel} from '../index';
-import {orm} from '../../index';
+import {ProxyModel, pk, fk, attr, BaseModel, orm} from '../index';
 
 class TestModel extends BaseModel {
   static modelName = 'TestModel';
@@ -52,13 +51,6 @@ class TestModel extends BaseModel {
   }
 }
 
-class TestPropModel extends BaseModel {
-  static modelName = 'TestPropModel';
-  id!: String;
-  props2!: String;
-  Props1!: String;
-}
-
 class ReducerModel extends BaseModel {
   static modelName = 'ReducerModel';
   id!: String;
@@ -80,17 +72,11 @@ class ReducerChangeModel extends BaseModel {
   props2!: String;
   Props1!: String;
 }
-
-export {TestModel};
-
-orm.register(TestModel, TestPropModel, ReducerModel, ReducerChangeModel);
+//@ts-ignore
+orm.register(TestModel, ReducerModel, ReducerChangeModel);
+//@ts-ignore
 let session = orm.session({
   TestModel: {
-    items: [],
-    itemsById: {},
-    meta: {}
-  },
-  TestPropModel: {
     items: [],
     itemsById: {},
     meta: {}
@@ -107,9 +93,10 @@ let session = orm.session({
   }
 });
 
-export {session};
 describe('it', () => {
   it('test', () => {
     expect(true).toBe(true);
   });
 });
+
+export {session};

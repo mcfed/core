@@ -1,11 +1,8 @@
 //@ts-ignore
-import {session, TestModel as TestModelClass} from './ormInit';
-import {ProxyModel} from '../Model';
+import {session} from './ormInit';
 
 describe('ORM initial', () => {
-  const Test = session.TestModel;
-
-  var TestModel = Test.create({
+  var TestModelInstance = session.TestModel.create({
     id: 'abc',
     // serverName: 'abd',
     serverStatus: '1',
@@ -13,47 +10,13 @@ describe('ORM initial', () => {
     serverPort: '8080',
     ip: 'address'
   });
-  //@ts-ignore
-  const testModel = new ProxyModel(TestModel, Test, TestModelClass);
-  // console.log(TestModel, Test, testModel);
-  it('testModel serverStatusStr', done => {
-    expect(testModel.serverStatusStr).toBe('启用');
-    done();
-  });
 
-  it('testModel  serverName default {unname}', done => {
-    expect(testModel.serverName).toBe('unname');
-    done();
-  });
-
-  it('testModel serverIp has value ', done => {
-    expect(testModel.serverIp).toBe('http://127.0.0.1');
-    done();
-  });
-
-  it('testModel port <-serverPort ', done => {
-    expect(testModel.port).toBe('8080');
-    done();
-  });
-
-  it('testModel serverAddress = {serverIp}:{serverPort}', done => {
-    expect(testModel.serverAddress).toBe('127.0.0.1:8080');
-    done();
-  });
-  it('testModel serverName set', done => {
-    testModel.serverPort = '7099';
-    expect(testModel.serverAddress).toBe('127.0.0.1:7099');
-    done();
-  });
-
-  describe('origin model can be use', () => {
-    it('field use', () => {
-      expect(TestModel.id).toEqual('abc');
-      expect(TestModel.serverStatus).toEqual('1');
-      expect(TestModel.serverIp).toEqual('127.0.0.1');
-      expect(TestModel.serverPort).toEqual('7099');
-      expect(TestModel.ip).toEqual(undefined);
-    });
+  it('field use', () => {
+    expect(TestModelInstance.id).toEqual('abc');
+    expect(TestModelInstance.serverStatus).toEqual('1');
+    expect(TestModelInstance.serverIp).toEqual('127.0.0.1');
+    expect(TestModelInstance.serverPort).toEqual('8080');
+    expect(TestModelInstance.ip).toEqual(undefined);
   });
 });
 
