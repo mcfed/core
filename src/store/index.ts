@@ -145,6 +145,7 @@ export default class StoreManager<
         type: '@@ModuleMiddleware/register',
         payload: {name: moduleName}
       });
+      //@ts-ignore
       this.injectModel(orm, loaded.model);
       this.injectSaga(loaded.saga);
     }
@@ -164,6 +165,7 @@ export default class StoreManager<
         type: '@@ModuleMiddleware/register',
         payload: {name: moduleName}
       });
+      //@ts-ignore
       this.injectModel(orm, loaded.model);
     }
     return loaded.default;

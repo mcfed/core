@@ -1,5 +1,7 @@
-import {ORM, createSelector, ORMOpts, OrmState} from 'redux-orm';
-import {ProxyModel, fk, pk, attr, BaseModel} from './decoator';
+import {ORM, ORMOpts} from 'redux-orm';
+import {ProxyModel} from './Model';
+import {fk, pk, attr} from './fields';
+import {BaseModel} from './BaseModel';
 export {SessionBoundModel} from 'redux-orm';
 
 //@ts-ignore

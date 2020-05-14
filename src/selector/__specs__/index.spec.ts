@@ -16,9 +16,9 @@ class TestModel extends BaseModel {
   @pk()
   id!: string;
 }
-
+//@ts-ignore
 orm.register(TestModel);
-
+//@ts-ignore
 let session = orm.session({
   TestModel: {
     items: [],
