@@ -22,6 +22,9 @@ function initialsToUpperCase(str: string): string {
 class BaseModel extends Model {
   private static virtualFields?: any;
   static reducers = {};
+  constructor(props: any) {
+    super(props);
+  }
 
   initFields(props: any) {
     const _this = this;
