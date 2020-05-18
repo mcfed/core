@@ -32,22 +32,25 @@ class TestModel extends BaseModel {
   get getProp1() {
     return 111;
   }
-  get getServerIp() {
+  getServerIp() {
     //@ts-ignore
-    return 'http://' + this.serverIp;
+    return 'http://' + this._fields.serverIp;
+  }
+  get getServerPort() {
+    return 111;
   }
   get getServerAddress() {
     //@ts-ignore
-    return [this.serverIp, this.serverPort].join(':');
+    return [this._fields.serverIp, this._fields.serverPort].join(':');
   }
 
-  get getServerStatusStr() {
+  getServerStatus() {
     //@ts-ignore
-    return this.serverStatus === '1' ? '启用' : '禁用';
+    return this._fields.serverStatus === '1' ? '启用' : '禁用';
   }
   getServerStatusIp() {
     //@ts-ignore
-    return this.serverStatus + this.serverIp;
+    return this._fields.serverStatus + this._fields.serverIp;
   }
 }
 
