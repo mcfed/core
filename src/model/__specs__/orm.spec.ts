@@ -8,6 +8,7 @@ describe('ORM initial', () => {
     serverStatus: '1',
     serverIp: '127.0.0.1',
     serverPort: '8080',
+    serverAddress: 'test',
     ip: 'address'
   });
 
@@ -17,6 +18,16 @@ describe('ORM initial', () => {
     expect(TestModelInstance.serverIp).toEqual('127.0.0.1');
     expect(TestModelInstance.serverPort).toEqual('8080');
     expect(TestModelInstance.ip).toEqual(undefined);
+    expect(
+      session.TestModel.all()
+        .toModelArray()
+        .pop().id
+    ).toEqual('abc');
+    expect(
+      session.TestModel.all()
+        .toModelArray()
+        .pop().serverStatus
+    ).toEqual('1');
   });
 });
 
