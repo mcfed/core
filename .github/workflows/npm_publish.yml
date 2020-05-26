@@ -2,7 +2,7 @@ name: npm-publish
 on:
   push:
     tags:
-    - '*' # Watch the tag version change
+    - 'v*.*.*' # Watch the tag version change
 jobs:
   npm-publish:
     name: npm-publish
