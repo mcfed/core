@@ -1,3 +1,4 @@
+// @ts-nocheck
 //用户个人信息更新(二期)
 const mutation = `
 mutation user{

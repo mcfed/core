@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {sagaActions} from './saga';
 import {namespace} from './model';
 //import {ModuleContainer, ModuleModel} from 'mcf-module';

@@ -5,7 +5,8 @@ const FETCH_REQ = '@@MIDDLEWARE/FETCH_REQ';
 const FETCH_RES = '@@MIDDLEWARE/FETCH_RES';
 const FETCH_RESET = '@@MIDDLEWARE/RESET';
 
-export function fetchReq(payload: Action) {
+export function fetchReq(payload: any) {
+  //Action
   return {
     type: FETCH_REQ,
     payload

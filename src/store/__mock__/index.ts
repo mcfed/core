@@ -1,3 +1,4 @@
+// @ts-nocheck
 import router from './router';
 import saga from './saga';
 import reducer from './reducer';

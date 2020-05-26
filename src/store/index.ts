@@ -8,20 +8,52 @@ import {
   AnyAction,
   Store
 } from 'redux';
+import React from 'react';
 import createSagaMiddleware, {SagaMiddleware} from 'redux-saga';
 import {suppressWarnings} from 'core-decorators';
-
-import {fetchingMiddleware, moduleMiddleware} from '../middleware';
-import {orm} from '../model';
+import {Dispatch} from 'redux';
 import Model, {ORM, Session, OrmState, SessionBoundModel} from 'redux-orm';
 import {IndexedModelClasses} from 'redux-orm/ORM';
 import {Location, LocationState} from 'history';
+import {
+  fetchingMiddleware,
+  moduleMiddleware,
+  passportMiddleware
+} from '../middleware';
+import {orm} from '../model';
 import {reduxActionProxy} from '../proxy';
+import {ActionMiddleWareFactory, Injectable} from '../InjectFactory';
 
-const {fetchingReducer} = fetchingMiddleware;
-const {globalReducer} = moduleMiddleware;
+const {
+  fetchingReducer,
+  fetchReq,
+  fetchRes,
+  fetchParams,
+  fetchReset
+} = fetchingMiddleware;
+const {
+  globalReducer,
+  cancelTask,
+  upgradeDict,
+  upgradeBizcode,
+  upgradeConfig,
+  upgradeUser,
+  upgradeAuths
+} = moduleMiddleware;
+const {fetchLogining, fetchLogouting, fetchConfig} = passportMiddleware;
 
 export interface ModuleShape {
+  //@ts-ignore
+  prototype(
+    arg0: number,
+    prototype: any,
+    store: StoreManager<
+      IndexedModelClasses<any, string | number | symbol>,
+      string | number | symbol
+    >,
+    arg3: any,
+    payload: any
+  );
   default: Object;
   model: Model;
   reducer: Reducer;
@@ -168,7 +200,67 @@ export default class StoreManager<
       //@ts-ignore
       this.injectModel(orm, loaded.model);
     }
-    return loaded.default;
+    const dispatch = this.store.dispatch;
+    const middlware = {
+      fetchReq: () => dispatch(fetchReq({})),
+      fetchParams: () => dispatch(fetchParams({})),
+      fetchLogining: () => dispatch(fetchLogining({})),
+      fetchLogouting: () => dispatch(fetchLogouting({}))
+    };
+    const result = this.injectAction(
+      loaded.default,
+      loaded.saga,
+      this.store.dispatch,
+      moduleName,
+      middlware
+    );
+    return result;
+  }
+  private middlware2(dispatch: Dispatch) {
+    return {
+      //@ts-ignore
+      fetchingReducer: () => dispatch(fetchingReducer({})),
+      fetchReq: () => dispatch(fetchReq({})),
+      fetchRes: () => dispatch(fetchRes({})),
+      fetchParams: () => dispatch(fetchParams({})),
+      fetchReset: () => dispatch(fetchReset({})),
+
+      //@ts-ignore
+      globalReducer: () => dispatch(globalReducer({})),
+      cancelTask: () => dispatch(cancelTask({})),
+      upgradeDict: () => dispatch(upgradeDict({})),
+      upgradeBizcode: () => dispatch(upgradeBizcode({})),
+      upgradeConfig: () => dispatch(upgradeConfig({})),
+      upgradeUser: () => dispatch(upgradeUser({})),
+      upgradeAuths: () => dispatch(upgradeAuths({})),
+
+      fetchLogining: () => dispatch(fetchLogining({})),
+      fetchLogouting: () => dispatch(fetchLogouting({})),
+      fetchConfig: () => dispatch(fetchConfig({}))
+    };
+  }
+
+  private injectAction(
+    component: any,
+    actions: any,
+    dispatch: Dispatch,
+    namespace: string,
+    middlware: any
+  ) {
+    //@ts-ignore
+    return props => {
+      const dom = React.createElement(component, {
+        ...props,
+        actions: ActionMiddleWareFactory(
+          actions,
+          dispatch,
+          namespace,
+          middlware
+        )
+      });
+      console.log('dom', dom, props);
+      return dom;
+    };
   }
 
   @suppressWarnings

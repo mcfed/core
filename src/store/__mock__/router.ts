@@ -1,3 +1,4 @@
+// @ts-nocheck
 import * as Containers from './container';
 
 const router = [];
