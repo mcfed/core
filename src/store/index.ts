@@ -201,13 +201,14 @@ export default class StoreManager<
       this.injectModel(orm, loaded.model);
     }
     const dispatch = this.store.dispatch;
-
+    const middleware = this.middlware(dispatch);
+    console.log('middleware', middleware);
     const result = this.injectAction(
       loaded.default,
       loaded.saga,
-      this.store.dispatch,
+      dispatch,
       moduleName,
-      this.middlware
+      middleware
     );
     return result;
   }
