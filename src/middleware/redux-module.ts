@@ -1,9 +1,9 @@
-const UPGRADE_DICT = '@@MIDDLEWARE/UPGRADE_DICT';
-const UPGRADE_BIZCODE = '@@MIDDLEWARE/UPGRADE_BIZCODE';
-const UPGRADE_CONFIG = '@@MIDDLEWARE/UPGRADE_CONFIG';
-const UPGRADE_USER = '@@MIDDLEWARE/UPGRADE_USER';
-const UPGRADE_AUTHS = '@@MIDDLEWARE/UPGRADE_AUTHS';
-const CANCEL_TASK = '@@MIDDLEWARE/CANCEL_TASK';
+const UPGRADE_DICT = '@@MIDDLEWARE/upgradeDict';
+const UPGRADE_BIZCODE = '@@MIDDLEWARE/upgradeBizcode';
+const UPGRADE_CONFIG = '@@MIDDLEWARE/upgradeConfig';
+const UPGRADE_USER = '@@MIDDLEWARE/upgradeUser';
+const UPGRADE_AUTHS = '@@MIDDLEWARE/upgradeAuths';
+const CANCEL_TASK = '@@MIDDLEWARE/cancelTask';
 
 export function cancelTask(payload: any) {
   return {
