@@ -201,22 +201,17 @@ export default class StoreManager<
       this.injectModel(orm, loaded.model);
     }
     const dispatch = this.store.dispatch;
-    const middlware = {
-      fetchReq: () => dispatch(fetchReq({})),
-      fetchParams: () => dispatch(fetchParams({})),
-      fetchLogining: () => dispatch(fetchLogining({})),
-      fetchLogouting: () => dispatch(fetchLogouting({}))
-    };
+
     const result = this.injectAction(
       loaded.default,
       loaded.saga,
       this.store.dispatch,
       moduleName,
-      middlware
+      this.middlware
     );
     return result;
   }
-  private middlware2(dispatch: Dispatch) {
+  private middlware(dispatch: Dispatch) {
     return {
       //@ts-ignore
       fetchingReducer: () => dispatch(fetchingReducer({})),
