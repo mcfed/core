@@ -1,9 +1,9 @@
 import {Action} from 'redux';
 
-const FETCH_PARAMS = '@@MIDDLEWARE/FETCH_PARAMS';
-const FETCH_REQ = '@@MIDDLEWARE/FETCH_REQ';
-const FETCH_RES = '@@MIDDLEWARE/FETCH_RES';
-const FETCH_RESET = '@@MIDDLEWARE/RESET';
+const FETCH_PARAMS = '@@MIDDLEWARE/fetchParams';
+const FETCH_REQ = '@@MIDDLEWARE/fetchReq';
+const FETCH_RES = '@@MIDDLEWARE/fetchRes';
+const FETCH_RESET = '@@MIDDLEWARE/fetchReset';
 
 export function fetchReq(payload: Action) {
   return {

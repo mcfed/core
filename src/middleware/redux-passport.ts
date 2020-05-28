@@ -1,6 +1,6 @@
-const FETCH_LOGINING = '@@MIDDLEWARE/FETCH_LOGINING';
-const FETCH_LOGOUTING = '@@MIDDLEWARE/FETCH_LOGOUTING';
-const FETCH_CONFIG = '@@MIDDLEWARE/FETCH_CONFIG';
+const FETCH_LOGINING = '@@MIDDLEWARE/fetchLogining';
+const FETCH_LOGOUTING = '@@MIDDLEWARE/fetchLogouting';
+const FETCH_CONFIG = '@@MIDDLEWARE/fetchConfig';
 
 export function fetchLogining(payload: any) {
   return {

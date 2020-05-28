@@ -36,7 +36,8 @@ export function reduxActionProxy<T extends object>(target: T): T {
           //@ts-ignore
           function(state: Object = target.initalState, action: any) {
             const prop = action.meta?.method;
-            if (prop !== undefined) {
+            //@ts-ignore
+            if (prop !== undefined && newTarget[prop]) {
               return {
                 ...state,
                 //@ts-ignore
