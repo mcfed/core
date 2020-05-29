@@ -23,19 +23,23 @@ describe('decorator unit test', () => {
       payload: {name: 'param'},
       type: 'A/fetchPage'
     });
+    expect(a.fetchPage.toString()).toBe('A/fetchPage');
   });
-  it('loading test', () => {
+  it('loading test', async () => {
     const a = new A();
-    a.fetchList();
+    const d = await a.fetchList();
     expect(a.middleware.fetchReq).toHaveBeenCalledTimes(1);
     expect(a.middleware.fetchReq).toHaveBeenCalledWith({
       payload: true,
       type: 'A/fetchList'
     });
+
     expect(a.middleware.fetchRes).toHaveBeenCalledTimes(1);
     expect(a.middleware.fetchRes).toHaveBeenCalledWith({
       payload: false,
       type: 'A/fetchList'
     });
+
+    expect(a.fetchPage.toString()).toBe('A/fetchList');
   });
 });
