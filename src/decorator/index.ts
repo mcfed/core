@@ -15,7 +15,8 @@ export const param = () => {
         };
 
         // @ts-ignore
-        fn.__proto__.toString = () => type;
+        // fn.__proto__.toString = () => type;
+        fn.constructor.prototype.toString = () => type;
 
         //@ts-ignore
         this.middleware.fetchParams(payload);
@@ -45,7 +46,8 @@ export const loading = () => {
       };
 
       // @ts-ignore
-      fn.__proto__.toString = () => type;
+      // fn.__proto__.toString = () => type;
+      fn.constructor.prototype.toString = () => type;
 
       // @ts-ignore
       const {fetchReq, fetchRes} = this.middleware;
