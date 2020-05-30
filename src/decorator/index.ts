@@ -14,9 +14,11 @@ export const param = () => {
           payload: value
         };
 
+        if (fn.constructor) {
+          fn.constructor.prototype.toString = () => type;
+        }
         // @ts-ignore
-        // fn.__proto__.toString = () => type;
-        fn.constructor.prototype.toString = () => type;
+        fn.__proto__.toString = () => type;
 
         //@ts-ignore
         this.middleware.fetchParams(payload);
@@ -45,19 +47,16 @@ export const loading = () => {
         payload: false
       };
 
+      if (fn.constructor) {
+        fn.constructor.prototype.toString = () => type;
+      }
       // @ts-ignore
-      // fn.__proto__.toString = () => type;
-      fn.constructor.prototype.toString = () => type;
+      fn.__proto__.toString = () => type;
 
       // @ts-ignore
       const {fetchReq, fetchRes} = this.middleware;
 
       fetchReq(reqPayload);
-      // if (fn.constructor.name === 'AsyncFunction') {
-      //   await fn.apply(this, args);
-      // } else {
-      //   fn.apply(this, args)
-      // }
       await fn.apply(this, args);
       fetchRes(resPayload);
     };
