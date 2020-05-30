@@ -14,8 +14,8 @@ export const param = () => {
           payload: value
         };
 
-        if (fn.constructor) {
-          fn.constructor.prototype.toString = () => type;
+        if (fn.prototype && fn.prototype.toString) {
+          fn.prototype.toString = () => type;
         }
         // @ts-ignore
         fn.__proto__.toString = () => type;
@@ -47,8 +47,8 @@ export const loading = () => {
         payload: false
       };
 
-      if (fn.constructor) {
-        fn.constructor.prototype.toString = () => type;
+      if (fn.prototype && fn.prototype.toString) {
+        fn.prototype.toString = () => type;
       }
       // @ts-ignore
       fn.__proto__.toString = () => type;
