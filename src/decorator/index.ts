@@ -14,11 +14,7 @@ export const param = () => {
           payload: value
         };
 
-        if (fn.prototype && fn.prototype.toString) {
-          fn.prototype.toString = () => type;
-        }
-        // @ts-ignore
-        fn.__proto__.toString = () => type;
+        setToString(fn, () => type);
 
         //@ts-ignore
         this.middleware.fetchParams(payload);
@@ -47,11 +43,7 @@ export const loading = () => {
         payload: false
       };
 
-      if (fn.prototype && fn.prototype.toString) {
-        fn.prototype.toString = () => type;
-      }
-      // @ts-ignore
-      fn.__proto__.toString = () => type;
+      setToString(fn, () => type);
 
       // @ts-ignore
       const {fetchReq, fetchRes} = this.middleware;
@@ -61,4 +53,11 @@ export const loading = () => {
       fetchRes(resPayload);
     };
   };
+};
+
+const setToString = (obj: any, fn: Function) => {
+  if (obj.__proto__) {
+    obj.__proto__.toString = fn;
+    setToString(obj.__proto__, fn);
+  }
 };
