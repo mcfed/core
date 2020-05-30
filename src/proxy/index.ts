@@ -7,12 +7,43 @@ function getProperty<T, K extends keyof T>(o: T, name: K): T[K] {
   return o[name]; // o[name] is of type T[K]
 }
 
+class ClassProxy {
+  constructor(target: any, config: any) {
+    //@ts-ignore
+    if (global.Proxy) {
+      return new Proxy(target, config);
+    } else {
+      return this.customProxy(target, config);
+    }
+  }
+  getPropertyNames(target: Object) {
+    return Object.getOwnPropertyNames(target.constructor.prototype);
+  }
+  customProxy(target: any, config: any) {
+    const props = this.getPropertyNames(target).filter(
+      x => x !== 'constructor'
+    );
+    const newTarget = Object.create({});
+    props.map(function(name) {
+      Object.defineProperty(newTarget, name, {
+        configurable: false,
+        writable: true,
+        enumerable: true,
+        value: config.get(target, name)
+      });
+    });
+
+    return newTarget;
+  }
+}
+
 export function useActionProxy<T extends object>(
   target: T,
   dispatch: Dispatch,
   namespace: string = target.constructor.name
 ): T {
-  return new Proxy(target, {
+  //@ts-ignore
+  return new ClassProxy(target, {
     get: function(newTarget: T, prop: keyof T) {
       return function(payload: Object) {
         dispatch({
@@ -29,7 +60,8 @@ export function useActionProxy<T extends object>(
 
 export function reduxActionProxy<T extends object>(target: T): T {
   // const instance = new target();
-  return new Proxy(target, {
+  //@ts-ignore
+  return new ClassProxy(target, {
     get: function(newTarget: T, prop: keyof T) {
       if (prop === 'getReducer') {
         return (): Reducer =>
@@ -41,7 +73,7 @@ export function reduxActionProxy<T extends object>(target: T): T {
               return {
                 ...state,
                 //@ts-ignore
-                ...getProperty(newTarget, prop)(action.payload, state)
+                ...getProperty(target, prop)(action.payload, state)
               };
             } else {
               return state;
@@ -50,7 +82,8 @@ export function reduxActionProxy<T extends object>(target: T): T {
       } else if (newTarget[prop] !== undefined) {
         return function(payload: Object) {
           //@ts-ignore
-          return getProperty(newTarget, prop)(payload);
+
+          return getProperty(target, prop)(payload);
         };
       }
     }
