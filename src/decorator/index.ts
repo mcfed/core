@@ -8,7 +8,7 @@ export const param = () => {
     descriptor.value = async function(...args: any[]) {
       // @ts-ignore
       let type = `${this.__proto__.constructor.name}/${propertyKey}`;
-      args = args.map(value => {
+      args.map(value => {
         let payload = {
           type: type,
           payload: value
