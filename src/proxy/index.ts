@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import {Store, Reducer, Dispatch} from 'redux';
+import {resolve} from 'dns';
 
 export type Constructor<T = any> = new (...args: any[]) => T;
 
@@ -60,7 +61,10 @@ export function useActionProxy<T extends object>(
   });
 }
 
-export function reduxActionProxy<T extends object>(target: T): T {
+export function reduxActionProxy<T extends object>(
+  target: T,
+  store?: Store
+): T {
   // const instance = new target();
   //@ts-ignore
   return new ClassProxy(target, {
@@ -81,10 +85,14 @@ export function reduxActionProxy<T extends object>(target: T): T {
               return state;
             }
           };
+      } else if (prop == 'select') {
+        return (callback: Function) =>
+          new Promise((resolve, reject) => {
+            resolve(callback(store?.getState()));
+          });
       } else if (newTarget[prop] !== undefined) {
         return function(payload: Object) {
           //@ts-ignore
-
           return getProperty(target, prop)(payload);
         };
       }

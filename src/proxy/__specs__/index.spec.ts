@@ -23,6 +23,21 @@ describe('reduxActionProxy', () => {
     expect(reducers).toHaveProperty('getReducer');
     expect(reducers.inital(payload)).toEqual(payload);
   });
+
+  it('调用 reduxActionProxy 第二个参数', async done => {
+    const middleware: never[] = [];
+    const initialState = {a: 1, b: 2};
+    const mockStore = configureStore(middleware);
+    const store = mockStore(initialState);
+    const reducers = reduxActionProxy(new CarReducer(), store);
+    expect(reducers).toHaveProperty('select');
+    //@ts-ignore
+    const result = await reducers.select((state: {a: number; b: number}) => {
+      return state;
+    });
+    expect(result).toEqual(initialState);
+    done();
+  });
 });
 
 describe('useActionProxy', () => {
