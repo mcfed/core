@@ -2,7 +2,12 @@ import {createStore, applyMiddleware} from 'redux';
 import configureStore from 'redux-mock-store';
 import {CarSaga, CarReducer, Api} from '../__mock__/mock';
 
-import {useActionProxy, reduxActionProxy, createActionProxy} from '../index';
+import {
+  useActionProxy,
+  reduxActionProxy,
+  createActionProxy,
+  ClassProxy
+} from '../index';
 describe('reduxActionProxy', () => {
   it('扩充getReducer方法', () => {
     const reducers = reduxActionProxy(new CarReducer());
@@ -72,5 +77,38 @@ describe('createActionProxy', () => {
       meta: {method: 'saveItem'}
     });
     console.log(store.getActions());
+  });
+});
+
+describe('customProxy', () => {
+  class A {
+    a() {}
+    a1() {}
+  }
+
+  class B extends A {
+    b() {}
+    b1() {}
+  }
+  class C extends B {
+    c() {}
+    c1() {}
+  }
+
+  it('c use ClassProxy', () => {
+    const c = new C();
+    //@ts-ignore
+    global.Proxy = undefined;
+    const classProxy = new ClassProxy(c, {
+      get: function(newTarget: any, prop: any) {
+        return prop;
+      }
+    });
+    //@ts-ignore
+    expect(classProxy.b1).toEqual('b1');
+    //@ts-ignore
+    expect(classProxy.b).toEqual('b');
+    //@ts-ignore
+    expect(classProxy.c1).toEqual('c1');
   });
 });

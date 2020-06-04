@@ -7,7 +7,7 @@ function getProperty<T, K extends keyof T>(o: T, name: K): T[K] {
   return o[name]; // o[name] is of type T[K]
 }
 
-class ClassProxy {
+export class ClassProxy {
   constructor(target: any, config: any) {
     //@ts-ignore
     if (global.Proxy) {
@@ -17,7 +17,9 @@ class ClassProxy {
     }
   }
   getPropertyNames(target: Object) {
-    return Object.getOwnPropertyNames(target.constructor.prototype);
+    return Object.getOwnPropertyNames(Object.getPrototypeOf(target)).concat(
+      Object.getOwnPropertyNames(Object.getPrototypeOf(target).__proto__)
+    );
   }
   customProxy(target: any, config: any) {
     const props = this.getPropertyNames(target).filter(

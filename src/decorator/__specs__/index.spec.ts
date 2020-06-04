@@ -40,6 +40,6 @@ describe('decorator unit test', () => {
       type: 'A/fetchList'
     });
 
-    expect(a.fetchPage.toString()).toBe('A/fetchList');
+    expect(a.fetchList.toString()).toBe('A/fetchList');
   });
 });
