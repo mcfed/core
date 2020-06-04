@@ -1,6 +1,6 @@
 {
   "name": "@mcf/core",
-  "version": "0.4.11",
+  "version": "0.4.12",
   "description": "@mcf for core",
   "main": "dist/index.js",
   "module": "dist/index.js",
