@@ -15,10 +15,13 @@ export const param = () => {
         };
 
         //@ts-ignore
-        this.__proto__[propertyKey].toString = () => type;
+        if (this.__proto__[propertyKey]) {
+          //@ts-ignore
+          this.__proto__[propertyKey].toString = () => type;
 
-        //@ts-ignore
-        this.middleware.fetchParams(payload);
+          //@ts-ignore
+          this.middleware.fetchParams(payload);
+        }
       });
       await fn.apply(this, args);
     };
@@ -43,15 +46,19 @@ export const loading = () => {
         type: type,
         payload: false
       };
-      //@ts-ignore
-      this.__proto__[propertyKey].toString = () => type;
 
       // @ts-ignore
-      const {fetchReq, fetchRes} = this.middleware;
+      if (this.__proto__[propertyKey]) {
+        //@ts-ignore
+        this.__proto__[propertyKey].toString = () => type;
 
-      fetchReq(reqPayload);
-      await fn.apply(this, args);
-      fetchRes(resPayload);
+        // @ts-ignore
+        const {fetchReq, fetchRes} = this.middleware;
+
+        fetchReq(reqPayload);
+        await fn.apply(this, args);
+        fetchRes(resPayload);
+      }
     };
   };
 };
