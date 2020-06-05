@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import {Store, Dispatch} from 'redux';
 import {useActionProxy} from '../proxy';
+import {MiddlewareFactory} from '../middleware';
 
 export type Constructor<T = any> = new (...args: any[]) => T;
 
@@ -31,7 +32,7 @@ export const ActionFactory = <T>(
     let instance = null;
     if (provider.prototype.hasOwnProperty('getReducer')) {
       instance = useActionProxy(new provider(), dispatch, namespace);
-    } else if (provider.name == 'MiddlewareFactory') {
+    } else if (provider === MiddlewareFactory) {
       instance = useActionProxy(new provider(), dispatch, '@@MIDDLEWARE');
     } else {
       instance = new provider();
