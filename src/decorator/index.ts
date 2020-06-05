@@ -15,7 +15,7 @@ export const param = () => {
         };
 
         //@ts-ignore
-        this.__proto__[propertyKey].toString = () => type;
+        this.__proto__[propertyKey]?.toString = () => type;
 
         //@ts-ignore
         this.middleware.fetchParams(payload);
@@ -44,7 +44,7 @@ export const loading = () => {
         payload: false
       };
       //@ts-ignore
-      this.__proto__[propertyKey].toString = () => type;
+      this.__proto__[propertyKey]?.toString = () => type;
 
       // @ts-ignore
       const {fetchReq, fetchRes} = this.middleware;
