@@ -5,6 +5,21 @@ import * as passportMiddleware from './redux-passport';
 export {fetchingMiddleware, moduleMiddleware, passportMiddleware};
 
 export class MiddlewareFactory {
-  // fetchReq(payload: any) {}
-  // fetchRes(payload: any) {}
+  fetchReq(payload: any) {}
+  fetchRes(payload: any) {}
+  fetchParams() {}
+  fetchReset() {}
+  showSuccess() {}
+  showError() {}
+  refreshPage() {}
+  goBack() {}
+  push() {}
+  fetchConfig() {}
+  fetchLogouting() {}
+  fetchLogining() {}
+  upgradeDict() {}
+  upgradeBizcode() {}
+  upgradeConfig() {}
+  upgradeUser() {}
+  upgradeAuths() {}
 }

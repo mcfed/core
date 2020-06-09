@@ -19,7 +19,7 @@ export const param = () => {
         this.__proto__[propertyKey].toString = () => type;
       }
       //@ts-ignore
-      this.middleware.fetchParams(payload);
+      this.middleware?.fetchParams(payload);
 
       await fn.apply(this, args);
     };
