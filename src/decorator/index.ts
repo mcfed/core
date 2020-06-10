@@ -1,3 +1,6 @@
+/**
+ * 自动保存请求参数对象
+ */
 export const param = () => {
   return function(
     target: any,
@@ -26,6 +29,10 @@ export const param = () => {
   };
 };
 
+/**
+ * 自动保存请求状态变化
+ * 请求开始 -> 请求结束
+ */
 export const loading = () => {
   return function(
     target: any,

@@ -26,16 +26,30 @@ export const querysSelector = createSelector(
 export const dictsSelector = createSelector([appSelector], (selector: any) => {
   return selector.dicts;
 });
-
+/**
+ * 获取指定reducer
+ * @param state
+ * @param namespace
+ */
 export const reducerSelector = (state: any, namespace: string) =>
   state[namespace];
 
+/**
+ * 获取指定求请状态
+ * @param state
+ * @param type
+ */
 export function spins(state: any, type: string) {
   return createSelector([spinsSelector], (spins: any) => {
     return spins.get(type);
   })(state);
 }
 
+/**
+ * 查询
+ * @param state
+ * @param type
+ */
 export function querys(state: any, type: string) {
   return createSelector([querysSelector], (querys: any) => {
     return querys.get(type) || {};

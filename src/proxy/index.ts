@@ -7,7 +7,9 @@ export type Constructor<T = any> = new (...args: any[]) => T;
 function getProperty<T, K extends keyof T>(o: T, name: K): T[K] {
   return o[name]; // o[name] is of type T[K]
 }
-
+/**
+ * 自定义类代理,兼容IE 不支持 Proxy
+ */
 export class ClassProxy {
   constructor(target: any, config: any) {
     //@ts-ignore
@@ -40,6 +42,12 @@ export class ClassProxy {
   }
 }
 
+/**
+ * 使用Action代理,调用方法自动 dispatch 方法
+ * @param target  目录类
+ * @param dispatch store.dispatch
+ * @param namespace 命名空间,即前缀
+ */
 export function useActionProxy<T extends object>(
   target: T,
   dispatch: Dispatch,
@@ -60,6 +68,12 @@ export function useActionProxy<T extends object>(
     }
   });
 }
+
+/**
+ * 将普通对象转成Reducer对象代理,调用 getReducer 获取 reducer 方法
+ * @param target 目标类
+ * @param store Store
+ */
 
 export function reduxActionProxy<T extends object>(
   target: T,
@@ -100,6 +114,11 @@ export function reduxActionProxy<T extends object>(
   });
 }
 
+/**
+ * 创建ActionProxy代理对象,发起dispatch
+ * @param target
+ * @param dispatch store.dispatch
+ */
 export function createActionProxy<T extends object>(
   target: Constructor<T>,
   dispatch: Dispatch
