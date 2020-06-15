@@ -2,7 +2,7 @@ import * as fetchingMiddleware from './fetching';
 import * as moduleMiddleware from './redux-module';
 import * as passportMiddleware from './redux-passport';
 import {Action} from 'redux';
-import {LocationDescriptorObject} from 'history';
+import {LocationDescriptorObject, Path, LocationState} from 'history';
 export {fetchingMiddleware, moduleMiddleware, passportMiddleware};
 /**
  * MiddlewareFactory为代理类,能过ReduxProxyAction
@@ -80,11 +80,11 @@ export class MiddlewareFactory {
    */
   upgradeAuths(auths: Object): void {}
   /**
-   * 刷新页面,需要绑定当前对象作用域
+   * 刷新页面,需要传递当前对象作用域
    * @param fn 指定刷新方法
-   * @example refreshPage(this.fetchPage.bind(this))
+   * @example refreshPage({fn:this.fetchPage,scope:this})
    */
-  refreshPage(fn: Function): void {}
+  refreshPage(payload: {fn: Function; scope: Object}): void {}
   /**
    * 返回上一页
    */
