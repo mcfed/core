@@ -1,5 +1,5 @@
 {
-  "name": "@mcf/core",
+  "name": "@mcfed/core",
   "version": "0.4.18",
   "description": "@mcf for core",
   "main": "dist/index.js",
@@ -23,7 +23,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "http://git.mchz.com.cn/mcf/core.git"
+    "url": "http://github.com/mcfed/core.git"
   },
   "author": "jaxchow",
   "license": "ISC",
