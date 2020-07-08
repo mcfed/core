@@ -75,12 +75,12 @@ function globalReducer(
     case UPGRADE_USER:
       return {
         ...state,
-        user: Object.assign({}, state.config, payload)
+        user: Object.assign({}, state.user, payload)
       };
     case UPGRADE_AUTHS:
       return {
         ...state,
-        auths: Object.assign({}, state.config, payload)
+        auths: Object.assign({}, state.auths, payload)
       };
     default:
       return state;
