@@ -4,7 +4,14 @@ const UPGRADE_CONFIG = '@@MIDDLEWARE/upgradeConfig';
 const UPGRADE_USER = '@@MIDDLEWARE/upgradeUser';
 const UPGRADE_AUTHS = '@@MIDDLEWARE/upgradeAuths';
 const CANCEL_TASK = '@@MIDDLEWARE/cancelTask';
+const RESET_STATE = '@@MIDDLEWARE/resetState';
 
+export function resetState(payload: any) {
+  return {
+    type: RESET_STATE,
+    payload: payload
+  };
+}
 export function cancelTask(payload: any) {
   return {
     type: CANCEL_TASK,
@@ -81,6 +88,11 @@ function globalReducer(
       return {
         ...state,
         auths: Object.assign({}, state.auths, payload)
+      };
+    case RESET_STATE:
+      return {
+        ...state,
+        [payload]: {}
       };
     default:
       return state;

@@ -80,10 +80,16 @@ export class MiddlewareFactory {
    */
   upgradeAuths(auths: Object): void {}
   /**
+   * 重置状态
+   * @param auths 权限信息
+   */
+  resetState(key: string): void {}
+  /**
    * 刷新页面,需要传递当前对象作用域
    * @param fn 指定刷新方法
    * @example refreshPage({fn:this.fetchPage,scope:this})
    */
+
   refreshPage(payload: {fn: Function; scope: Object}): void {}
   /**
    * 返回上一页
