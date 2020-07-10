@@ -19,7 +19,10 @@ const PkSet = (setting?: object | string) => (
   target: any,
   propertyKey: string
 ) => {
-  target.constructor.options.idAttribute = propertyKey;
+  target.constructor.options = {
+    ...target.constructor.options,
+    idAttribute: propertyKey
+  };
 };
 
 interface fkType {
