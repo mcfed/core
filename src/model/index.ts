@@ -1,6 +1,6 @@
 import {ORM, ORMOpts} from 'redux-orm';
 import {ProxyModel} from './Model';
-import {fk, pk, attr} from './fields';
+import {fk, pk, attr, many, oneToOne} from './fields';
 import {BaseModel} from './BaseModel';
 export {SessionBoundModel} from 'redux-orm';
 
@@ -24,4 +24,4 @@ class ModelORM extends ORM {
 //@ts-ignore
 const orm = new ModelORM();
 
-export {orm, ModelORM, ProxyModel, pk, fk, attr, BaseModel};
+export {orm, ModelORM, ProxyModel, pk, fk, attr, many, oneToOne, BaseModel};
