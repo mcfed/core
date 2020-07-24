@@ -78,23 +78,9 @@ class ReducerChangeModel extends BaseModel {
 //@ts-ignore
 orm.register(TestModel, ReducerModel, ReducerChangeModel);
 //@ts-ignore
-let session = orm.session({
-  TestModel: {
-    items: [],
-    itemsById: {},
-    meta: {}
-  },
-  ReducerModel: {
-    items: [],
-    itemsById: {},
-    meta: {}
-  },
-  ReducerChangeModel: {
-    items: [],
-    itemsById: {},
-    meta: {}
-  }
-});
+const emptyDBstate = orm.getEmptyState();
+//@ts-ignore
+let session = orm.session(...emptyDBstate);
 
 describe('it', () => {
   it('test', () => {
