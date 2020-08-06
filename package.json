@@ -49,7 +49,7 @@
     "core-decorators": "^0.20.0",
     "history": "^4.10.1",
     "redux": "^4.0.5",
-    "redux-orm": "0.12.4",
+    "redux-orm": "^0.16.1",
     "redux-saga": "0.16.2",
     "reflect-metadata": "^0.1.13",
     "reselect": "^4.0.0"
