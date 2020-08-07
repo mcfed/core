@@ -14,6 +14,8 @@
 
 <!-- Your comment below this -->
 
+# 0.5.0
+
 # 0.3.2
 
 - feature: 内置 Container 支持 connectContainer 缺省参数 [@jaxchow]
