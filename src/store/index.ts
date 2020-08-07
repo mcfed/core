@@ -95,6 +95,7 @@ export default class StoreManager<
   }
 
   private injectModel(orm: ORM<IndexedModelClasses>, model: Model): void {
+    //@ts-ignore
     Object.values(model)
       .filter((m: SessionBoundModel) => typeof m === 'function')
       .map((m: SessionBoundModel) => {
@@ -134,7 +135,7 @@ export default class StoreManager<
     return this.store;
   }
 
-  public loadModule(loaded: ModuleShape): Object {
+  public loadModule(loaded: ModuleShape): any {
     //@ts-ignore
     let moduleName = loaded.model.default.modelName;
     /* istanbul ignore else */
@@ -152,7 +153,7 @@ export default class StoreManager<
     return loaded.default;
   }
 
-  public loadRouterModule(loaded: any): Object {
+  public loadRouterModule(loaded: any): any {
     //@ts-ignore
     let moduleName = loaded.model.default.modelName;
     /* istanbul ignore else */
