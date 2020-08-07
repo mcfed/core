@@ -18,14 +18,11 @@ class TestModel extends BaseModel {
 }
 //@ts-ignore
 orm.register(TestModel);
+
 //@ts-ignore
-let session = orm.session({
-  TestModel: {
-    items: [],
-    itemsById: {},
-    meta: {}
-  }
-});
+const emptyDBstate = orm.getEmptyState();
+//@ts-ignore
+let session = orm.session(...emptyDBstate);
 
 const dicts = {
   a: [
@@ -102,6 +99,7 @@ describe('selector unit case', () => {
 describe('reselector unit case', () => {
   it('reselect containerSelector', function() {
     const resultState = Selector.containerSelector('TestModel', {})(state);
+    //@ts-ignore
     expect(resultState).toHaveProperty('item', {_fields: {}});
     expect(resultState).toHaveProperty('items', []);
   });

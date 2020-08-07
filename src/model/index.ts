@@ -22,6 +22,10 @@ class ModelORM extends ORM {
   }
 }
 //@ts-ignore
-const orm = new ModelORM();
+const orm = new ModelORM({
+  //@ts-ignore
+  stateSelector: (state: any) => state
+});
+//@ts-ignore
 
 export {orm, ModelORM, ProxyModel, pk, fk, attr, many, oneToOne, BaseModel};
