@@ -28,6 +28,8 @@ class BaseModel extends Model {
 
   initFields(props: any) {
     const _this = this;
+    //@ts-ignore
+    this.resetStaticFields();
     Object.keys(props).forEach(fieldName => {
       if (fieldName in this) {
         Object.defineProperty(this, fieldName, {
@@ -39,6 +41,10 @@ class BaseModel extends Model {
         });
       }
     });
+  }
+
+  private resetStaticFields() {
+    this.getClass().fields = {};
   }
 
   _initFields(props: any) {
