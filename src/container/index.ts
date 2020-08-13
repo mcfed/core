@@ -98,6 +98,8 @@ export const defaultMergeProps = (
           } else {
             return ownProps.intl.formatMessage({id: type}, vars);
           }
+        } else if (ownProps.i18n) {
+          return ownProps.i18n.t(type, vars);
         }
         return '';
       }
