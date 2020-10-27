@@ -1,6 +1,6 @@
 {
   "name": "@mcfed/core",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "@mcf for core",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -9,7 +9,8 @@
     "test": "jest",
     "dev": "rollup -c --watch",
     "build": "rm -rf dist && npx tsc -d --outDir dist",
-    "jsdoc": "node_modules/.bin/jsdoc --configure .jsdoc.json --verbose"
+    "jsdoc": "node_modules/.bin/jsdoc --configure .jsdoc.json --verbose",
+    "prepublish": "npm run build"
   },
   "keywords": [
     "@mcf",
