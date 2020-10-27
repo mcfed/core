@@ -33,6 +33,14 @@ const dicts = {
     {
       label: 'b',
       value: 2
+    },
+    {
+      label: 'c',
+      value: true
+    },
+    {
+      label: 'd',
+      value: false
     }
   ]
 };
@@ -94,6 +102,12 @@ describe('selector unit case', () => {
 
   it('dicts type value', function() {
     expect(Selector.dicts(state, 'a', 1)).toEqual('a');
+  });
+  it('dicts type value is boolean(true)', function() {
+    expect(Selector.dicts(state, 'a', true)).toEqual('c');
+  });
+  it('dicts type value is boolean(false)', function() {
+    expect(Selector.dicts(state, 'a', false)).toEqual('d');
   });
 });
 describe('reselector unit case', () => {
