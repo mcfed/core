@@ -58,7 +58,7 @@ export function querys(state: any, type: string) {
 
 export function dicts(state: any, type?: string, value?: any) {
   return createSelector([dictsSelector], (dicts: any) => {
-    if (value && type) {
+    if (value !== null && typeof value !== 'undefined' && type) {
       return getDictLabel(dicts, type, value);
     } else if (type) {
       return getDictList(dicts, type);
