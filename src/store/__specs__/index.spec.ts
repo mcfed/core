@@ -1,9 +1,8 @@
 import StoreManager from '..';
-import {createHashHistory} from 'history';
 
 describe('Name of the group', () => {
   it('create instance', () => {
-    const store = new StoreManager(createHashHistory());
+    const store = new StoreManager();
     expect(store.getStore()).toHaveProperty('dispatch');
     expect(store.getStore()).toHaveProperty('getState');
     expect(store.getStore()).toHaveProperty('subscribe');
@@ -11,14 +10,14 @@ describe('Name of the group', () => {
   });
 
   it('create instance with middleware ', () => {
-    const store = new StoreManager(createHashHistory(), [], []);
+    const store = new StoreManager([], []);
     expect(store.getStore()).toHaveProperty('dispatch');
     expect(store.getStore()).toHaveProperty('getState');
     expect(store.getStore()).toHaveProperty('subscribe');
     expect(store.getStore()).toHaveProperty('replaceReducer');
   });
   xit('create store loadModule(user)', () => {
-    const store = new StoreManager(createHashHistory());
+    const store = new StoreManager();
     const module = require('../__mock__');
     store.loadModule(module);
     expect(store.registed).toEqual(['user']);
@@ -26,7 +25,7 @@ describe('Name of the group', () => {
   });
 
   xit('create store Multiple executions loadModule(user)', () => {
-    const store = new StoreManager(createHashHistory());
+    const store = new StoreManager();
     const module = require('../__mock__');
     store.loadModule(module);
     store.loadModule(module);
@@ -36,7 +35,7 @@ describe('Name of the group', () => {
   });
 
   xit('create store importModule(user)', async () => {
-    const store = new StoreManager(createHashHistory());
+    const store = new StoreManager();
     const module = require('../__mock__');
     const importModule = new Promise((resolve, rejects) => resolve(module));
     expect(await store.importModule(importModule)).toEqual(module.default);
@@ -44,7 +43,7 @@ describe('Name of the group', () => {
   });
 
   xit('create store registerModule(user)', async () => {
-    const store = new StoreManager(createHashHistory());
+    const store = new StoreManager();
     const module = require('../__mock__');
     const importModule = new Promise((resolve, rejects) => resolve(module));
     expect(await store.registerModule(importModule)).toEqual(module.default);

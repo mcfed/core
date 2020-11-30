@@ -14,6 +14,11 @@
 
 <!-- Your comment below this -->
 
+# 0.6.0
+
+- fix: 移除 redux-saga 依赖 [@Jshoes]
+- fix: store 构建去除 history 传入 [@Jshoes]
+
 # 0.3.2
 
 - feature: 内置 Container 支持 connectContainer 缺省参数 [@jaxchow]

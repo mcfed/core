@@ -8,14 +8,12 @@ import {
   AnyAction,
   Store
 } from 'redux';
-import createSagaMiddleware, {SagaMiddleware} from 'redux-saga';
-import {suppressWarnings} from 'core-decorators';
 
 import {fetchingMiddleware, moduleMiddleware} from '../middleware';
 import {orm} from '../model';
 import Model, {ORM, Session, OrmState, SessionBoundModel} from 'redux-orm';
 import {IndexedModelClasses} from 'redux-orm/ORM';
-import {Location, LocationState} from 'history';
+// import {Location, LocationState} from 'history';
 import {reduxActionProxy} from '../proxy';
 
 const {fetchingReducer} = fetchingMiddleware;
@@ -23,9 +21,12 @@ const {globalReducer} = moduleMiddleware;
 
 export interface ModuleShape {
   default: Object;
-  model: Model;
+  model: Model & {
+    default: {
+      modelName: string;
+    };
+  };
   reducer: Reducer;
-  saga: any;
 }
 /**
  *  let store = new Store({reducers:{},middleares:[]})
@@ -42,50 +43,31 @@ export default class StoreManager<
     IndexedModelClasses<I>,
     AnyAction
   > = [];
-  private sagaMiddleware!: SagaMiddleware<any>;
   private makeRootReducer: any;
   protected store: Store;
 
   constructor(
-    history: LocationState,
     reducers: Array<Reducer> = [],
     middlewares: Array<Middleware> = [],
     makeRootReducer = combineReducers
   ) {
     this.makeRootReducer = makeRootReducer;
-    this.asyncReducers = this.initialReducer(reducers, history);
-    this.store = this.createStoreWithMiddleware(
-      middlewares,
-      history
-    )(this.makeRootReducer(this.asyncReducers));
+    this.asyncReducers = this.initialReducer(reducers);
+    this.store = this.createStoreWithMiddleware(middlewares)(
+      this.makeRootReducer(this.asyncReducers)
+    );
   }
 
-  private createStoreWithMiddleware(
-    middlewares: Array<Middleware>,
-    history: LocationState
-  ) {
-    return applyMiddleware.apply(
-      this,
-      this.initialMiddleware(history, middlewares)
-    )(createStore);
-  }
-  private initialMiddleware(
-    history: LocationState,
-    middlweares: Array<Middleware>
-  ): Array<Middleware> {
-    this.sagaMiddleware = createSagaMiddleware();
-    return middlweares.concat([this.sagaMiddleware]);
+  private createStoreWithMiddleware(middlewares: Array<Middleware>) {
+    return applyMiddleware.apply(this, middlewares)(createStore);
   }
 
-  private initialReducer(reducers: Array<Reducer>, history: LocationState) {
+  private initialReducer(reducers: Array<Reducer>) {
     return {
       appReducer: globalReducer,
       fetchingReducer,
       ...reducers
     };
-  }
-  private injectSaga(saga: any): void {
-    this.sagaMiddleware.run(saga);
   }
   private injectReducer(key: String, reducer: Reducer): void {
     //@ts-ignore
@@ -135,7 +117,6 @@ export default class StoreManager<
   }
 
   public loadModule(loaded: ModuleShape): Object {
-    //@ts-ignore
     let moduleName = loaded.model.default.modelName;
     /* istanbul ignore else */
     if (this.registed.indexOf(moduleName) < 0) {
@@ -147,18 +128,15 @@ export default class StoreManager<
       });
       //@ts-ignore
       this.injectModel(orm, loaded.model);
-      this.injectSaga(loaded.saga);
     }
     return loaded.default;
   }
 
   public loadRouterModule(loaded: any): Object {
-    //@ts-ignore
     let moduleName = loaded.model.default.modelName;
     /* istanbul ignore else */
     if (this.registed.indexOf(moduleName) < 0) {
       this.registed = this.registed.concat([moduleName]);
-      //@ts-ignore
       const reducer = reduxActionProxy(new loaded.reducer(), this.store);
       this.injectReducer(moduleName, reducer.getReducer());
       this.store.dispatch({
@@ -171,7 +149,6 @@ export default class StoreManager<
     return loaded.default;
   }
 
-  @suppressWarnings
   public registerModule(modulePath: any): Promise<ModuleShape> {
     return this.importModule(modulePath);
   }
