@@ -6,6 +6,38 @@ const UPGRADE_AUTHS = '@@MIDDLEWARE/upgradeAuths';
 const CANCEL_TASK = '@@MIDDLEWARE/cancelTask';
 const RESET_STATE = '@@MIDDLEWARE/resetState';
 
+export interface IMWModule {
+  /**
+   * 更新字典数据
+   * @param dicts 字典对象
+   */
+  upgradeDict(dicts: Object): void;
+  /**
+   * 更新业务码,即字典类似
+   * @param bizCode 业务码对象
+   */
+  upgradeBizcode(bizCode: Object): void;
+  /**
+   * 更新全局配置属性
+   * @param config 配置对象
+   */
+  upgradeConfig(config: Object): void;
+  /**
+   * 更新用户信息
+   * @param user 用户对象
+   */
+  upgradeUser(user: Object): void;
+  /**
+   * 更新权限信息
+   * @param auths 权限信息
+   */
+  upgradeAuths(auths: Object): void;
+  /**
+   * 重置状态
+   * @param auths 权限信息
+   */
+  resetState(key: string): void;
+}
 export function resetState(payload: any) {
   return {
     type: RESET_STATE,

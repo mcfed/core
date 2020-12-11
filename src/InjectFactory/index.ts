@@ -39,8 +39,12 @@ export const ActionFactory = <T>(
     let instance = null;
     if (provider.prototype.hasOwnProperty('getReducer')) {
       instance = useActionProxy(new provider(), dispatch, namespace);
-    } else if (provider === MiddlewareFactory) {
-      instance = useActionProxy(new provider(), dispatch, '@@MIDDLEWARE');
+    } else if (provider === Object) {
+      instance = useActionProxy(
+        new MiddlewareFactory(),
+        dispatch,
+        '@@MIDDLEWARE'
+      );
     } else {
       instance = new provider();
     }

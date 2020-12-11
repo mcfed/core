@@ -2,6 +2,24 @@ const FETCH_LOGINING = '@@MIDDLEWARE/fetchLogining';
 const FETCH_LOGOUTING = '@@MIDDLEWARE/fetchLogouting';
 const FETCH_CONFIG = '@@MIDDLEWARE/fetchConfig';
 
+export interface IMWPassport {
+  /**
+   * 发起登出用户信息事件
+   * @param payload 登出相关参数
+   */
+  fetchLogouting(payload: object): void;
+  /**
+   * 发起登录用户信息事件
+   * @param payload 登录相关参数
+   */
+  fetchLogining(payload: object): void;
+  /**
+   * 发起全局配置请求发起
+   * @param payload
+   */
+  fetchConfig(payload: object): void;
+}
+
 export function fetchLogining(payload: any) {
   return {
     type: FETCH_LOGINING,

@@ -5,6 +5,28 @@ const FETCH_REQ = '@@MIDDLEWARE/fetchReq';
 const FETCH_RES = '@@MIDDLEWARE/fetchRes';
 const FETCH_RESET = '@@MIDDLEWARE/fetchReset';
 
+export interface IMWFetch {
+  /**
+   * 请求状态开始
+   * @param payload 请求方法
+   */
+  fetchReq(payload: Action): void;
+  /**
+   * 请求状态结束
+   * @param payload 请求方法
+   */
+  fetchRes(payload: Action): void;
+  /**
+   * 保存请求参数
+   * @param payload 请求方法
+   */
+  fetchParams(payload: Action): void;
+  /**
+   * 重置请求参数为空
+   */
+  fetchReset(): void;
+}
+
 export function fetchReq(payload: Action) {
   return {
     type: FETCH_REQ,
