@@ -93,6 +93,7 @@ export function reduxActionProxy<T extends object>(
             if (
               action.type.indexOf(namespace) >= 0 &&
               prop !== undefined &&
+              //@ts-ignore
               newTarget[prop]
             ) {
               return {

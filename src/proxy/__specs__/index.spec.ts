@@ -106,6 +106,7 @@ describe('createActionProxy', () => {
     //@ts-ignore
 
     reduxActionProxy(carActions.reducer, store)
+      //@ts-ignore
       .select(function(state: any) {
         return state;
       })
