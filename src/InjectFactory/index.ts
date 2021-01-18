@@ -46,5 +46,9 @@ export const ActionFactory = <T>(
     }
     return instance;
   });
-  return new target(...args);
+
+  const targetInstance = new target(...args);
+  //@ts-ignore
+  targetInstance.namespace = namespace;
+  return targetInstance;
 };

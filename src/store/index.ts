@@ -138,7 +138,11 @@ export default class StoreManager<
     /* istanbul ignore else */
     if (this.registed.indexOf(moduleName) < 0) {
       this.registed = this.registed.concat([moduleName]);
-      const reducer = reduxActionProxy(new loaded.reducer(), this.store);
+      const reducer = reduxActionProxy(
+        new loaded.reducer(),
+        this.store,
+        moduleName
+      );
       this.injectReducer(moduleName, reducer.getReducer());
       this.store.dispatch({
         type: '@@ModuleMiddleware/register',

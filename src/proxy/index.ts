@@ -77,7 +77,8 @@ export function useActionProxy<T extends object>(
 
 export function reduxActionProxy<T extends object>(
   target: T,
-  store?: Store
+  store?: Store,
+  namespace?: String
 ): T {
   // const instance = new target();
   //@ts-ignore
@@ -89,7 +90,11 @@ export function reduxActionProxy<T extends object>(
           function(state: Object = target.initalState, action: any) {
             const prop = action.meta?.method;
             //@ts-ignore
-            if (prop !== undefined && newTarget[prop]) {
+            if (
+              action.type.indexOf(namespace) >= 0 &&
+              prop !== undefined &&
+              newTarget[prop]
+            ) {
               return {
                 ...state,
                 //@ts-ignore
@@ -100,6 +105,8 @@ export function reduxActionProxy<T extends object>(
             }
           };
       } else if (prop == 'select') {
+        //@ts-ignore
+        // console.log(newTarget.getReducer())
         return (callback: Function) =>
           new Promise((resolve, reject) => {
             resolve(callback(store?.getState()));
