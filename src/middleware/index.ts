@@ -87,10 +87,15 @@ export class MiddlewareFactory {
   /**
    * 刷新页面,需要传递当前对象作用域
    * @param fn 指定刷新方法
+   * @param needSum 是否需要计算分页 当前默认为模块总列表 page 计算
    * @example refreshPage({fn:this.fetchPage,scope:this})
    */
 
-  refreshPage(payload: {fn: Function; scope: Object}): void {}
+  refreshPage(payload: {
+    fn: Function;
+    scope: Object;
+    needSum?: boolean;
+  }): void {}
   /**
    * 返回上一页
    */
