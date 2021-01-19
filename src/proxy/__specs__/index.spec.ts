@@ -8,6 +8,7 @@ import {
   createActionProxy,
   ClassProxy
 } from '../index';
+import {ActionFactory} from '../../InjectFactory';
 describe('reduxActionProxy', () => {
   it('扩充getReducer方法', () => {
     const reducers = reduxActionProxy(new CarReducer());
@@ -62,7 +63,7 @@ describe('useActionProxy', () => {
     });
   });
 
-  it('真实store dispatch 修改 state', () => {
+  it.skip('真实store dispatch 修改 state', () => {
     const reducers = reduxActionProxy(new CarReducer());
     const initialState = {a: 1, b: 2};
     let store = createStore(
@@ -77,21 +78,41 @@ describe('useActionProxy', () => {
 });
 
 describe('createActionProxy', () => {
-  xit('调用方法', () => {
+  it('调用方法', () => {
     const middleware: never[] = [];
     const mockStore = configureStore(middleware);
     const initialState = {a: 1, b: 2};
     const store = mockStore(initialState);
 
-    const Actions = createActionProxy(CarSaga, store.dispatch);
-    const carActions = new Actions(CarReducer, new Api());
+    const carActions = ActionFactory(CarSaga, store.dispatch, 'CarReducer');
     carActions.run();
     expect(store.getActions()[0]).toEqual({
       type: 'CarReducer/saveItem',
       payload: {},
       meta: {method: 'saveItem'}
     });
-    console.log(store.getActions());
+    // console.log(store.getActions());
+  });
+  it('useActionProxy 穿透 select 方法不使用代理对象', () => {
+    const middleware: never[] = [];
+    const mockStore = configureStore(middleware);
+    const initialState = {a: 1, b: 2};
+    const store = mockStore(initialState);
+
+    const carActions = ActionFactory(CarSaga, store.dispatch, 'CarReducer');
+    // console.log(carActions.reducer.inital({a:1}))
+    //@ts-ignore
+    // console.log(carActions.reducer.select())
+    //@ts-ignore
+
+    reduxActionProxy(carActions.reducer, store)
+      //@ts-ignore
+      .select(function(state: any) {
+        return state;
+      })
+      .then((res: any) => {
+        expect(initialState).toBe(res);
+      });
   });
 });
 

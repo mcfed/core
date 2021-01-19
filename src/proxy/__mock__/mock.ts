@@ -46,7 +46,7 @@ export class CarSaga {
   }
 
   start() {
-    console.log(this);
+    console.log('start');
     // this.dispatch({type:"bbb"})
   }
 
