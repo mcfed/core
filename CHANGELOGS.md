@@ -12,6 +12,13 @@
 
 ## Master
 
+# 0.7.0
+
+- feat: basemodal 扩展 get set 方法
+  - 【get set 方法生效规则：注册字段名前+ get/set 并驼峰 如 字段为 ip get/set 方法分别为 getIp/setIp】
+  - 【get set 方法需要先有字段注册 】
+  - tips model 层同样支持 get 关键字方法
+
 # 0.6.2
 
 - fix: fixed 多个模块 state 串用的问题

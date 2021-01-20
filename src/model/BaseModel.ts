@@ -31,11 +31,44 @@ class BaseModel extends Model {
     //@ts-ignore
     this.resetStaticFields();
     Object.keys(props).forEach(fieldName => {
+      // for (var it in _this.constructor){
+      //   console.log(111,it)
+      // }
+      //@ts-ignore
+      // console.log(this.getServerStatusIp,this.getClass().constructor,Object.getOwnPropertyNames(this.getClass().prototype))
       if (fieldName in this) {
         Object.defineProperty(this, fieldName, {
-          //@ts-ignore
-          get: () => this._fields[fieldName],
-          set: value => this.set(fieldName, value),
+          get: () => {
+            const getFieldMethod =
+              //@ts-ignore
+              _this['get' + initialsToUpperCase(fieldName)];
+            // console.log(typeof _this['get' + initialsToUpperCase(fieldName)])
+            if (
+              getFieldMethod !== undefined &&
+              typeof getFieldMethod === 'function'
+            ) {
+              return getFieldMethod.call(
+                this,
+                //@ts-ignore
+                this._fields[fieldName]
+              );
+            }
+            //@ts-ignore
+            return this._fields[fieldName];
+          },
+          // set: value => {
+          //   let fieldVal = value;
+          //   const setFieldMethod =
+          //     //@ts-ignore
+          //     _this['set' + initialsToUpperCase(fieldName)];
+          //   if (
+          //     setFieldMethod !== undefined &&
+          //     typeof setFieldMethod === 'function'
+          //   ) {
+          //     fieldVal = setFieldMethod(value);
+          //   }
+          //   this.set(fieldName, fieldVal);
+          // },
           configurable: true,
           enumerable: true
         });
@@ -49,6 +82,19 @@ class BaseModel extends Model {
 
   _initFields(props: any) {
     const propsObj = Object(props);
+    // console.log(propsObj)
+    Object.keys(propsObj).forEach(fieldName => {
+      const setFieldMethod =
+        //@ts-ignore
+        this['set' + initialsToUpperCase(fieldName)];
+      if (
+        fieldName in this &&
+        setFieldMethod !== undefined &&
+        typeof setFieldMethod === 'function'
+      ) {
+        propsObj[fieldName] = setFieldMethod.call(this, propsObj[fieldName]);
+      }
+    });
     //@ts-ignore
     this._fields = {...propsObj};
 
