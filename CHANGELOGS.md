@@ -12,6 +12,15 @@
 
 ## Master
 
+# 0.6.2
+
+- fix: fixed 多个模块 state 串用的问题
+- fix: action 层新增 namespace 区分
+
+# 0.6.1
+
+- 该版本不可用，代码未 build 成功即 publish
+
 <!-- Your comment below this -->
 
 # 0.6.0
