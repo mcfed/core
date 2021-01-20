@@ -14,8 +14,8 @@ describe('ORM initial', () => {
 
   it('field use', () => {
     expect(TestModelInstance.id).toEqual('abc');
-    expect(TestModelInstance.serverStatus).toEqual('1');
-    expect(TestModelInstance.serverIp).toEqual('127.0.0.1');
+    expect(TestModelInstance.serverStatus).toEqual('启用');
+    expect(TestModelInstance.serverIp).toEqual('http://127.0.0.1');
     expect(TestModelInstance.serverPort).toEqual('8080');
     expect(TestModelInstance.ip).toEqual(undefined);
     expect(
@@ -27,7 +27,7 @@ describe('ORM initial', () => {
       session.TestModel.all()
         .toModelArray()
         .pop().serverStatus
-    ).toEqual('1');
+    ).toEqual('启用');
   });
 });
 

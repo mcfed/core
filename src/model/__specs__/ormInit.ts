@@ -2,6 +2,10 @@ import {AnyAction} from 'redux';
 import {ProxyModel, pk, fk, attr, BaseModel, orm} from '../index';
 
 class TestModel extends BaseModel {
+  constructor(props: any) {
+    super(props);
+    this.initFields(props);
+  }
   static modelName = 'TestModel';
   @pk()
   id!: String;
@@ -21,33 +25,15 @@ class TestModel extends BaseModel {
   @attr('serverPort')
   port!: Number;
 
-  prop1!: String;
-
-  @attr({fieldName: 'serverStatus'})
-  serverStatusStr!: String;
-
-  get getserverName() {
-    return 'unname';
-  }
-  get getProp1() {
-    return 111;
-  }
-  getServerIp() {
-    //@ts-ignore
-    return 'http://' + this._fields.serverIp;
-  }
-  get getServerPort() {
-    return 111;
-  }
-  get getServerAddress() {
-    //@ts-ignore
-    return [this._fields.serverIp, this._fields.serverPort].join(':');
+  setServerIp(orginVal: string) {
+    return 'http://' + orginVal;
   }
 
   getServerStatus() {
     //@ts-ignore
     return this._fields.serverStatus === '1' ? '启用' : '禁用';
   }
+
   getServerStatusIp() {
     //@ts-ignore
     return this._fields.serverStatus + this._fields.serverIp;
@@ -55,6 +41,10 @@ class TestModel extends BaseModel {
 }
 
 class ReducerModel extends BaseModel {
+  constructor(props: any) {
+    super(props);
+    this.initFields(props);
+  }
   static modelName = 'ReducerModel';
   id!: String;
   props2!: String;
