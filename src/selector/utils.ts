@@ -44,7 +44,8 @@ export function getDictLabel<T extends Dict<T>>(
   // try {
   const map = getDictList(dictData, dicName);
   map.forEach((arr: T) => {
-    if (arr.value === value) {
+    // 类型转换处理，不对string和number做区分
+    if (arr.value?.toString() === value?.toString()) {
       label = arr.label;
     }
   });
